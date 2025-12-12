@@ -9,3 +9,16 @@
 body {
   font-family: "Lexend", sans-serif;
 }
+
+/* ======================================================= */
+/* Custom CSS for React-Slick Arrows (To hide default icons) */
+/* ======================================================= */
+
+/*
+  react-slick-ன் அடிப்படை அம்புகளை (::before element-ஆல் உருவாக்கப்படுபவை) 
+  மறைக்கிறது, இதனால் Custom Arrow-கள் மட்டுமே தெரியும்.
+*/
+.slick-prev:before,
+.slick-next:before {
+  display: none !important;
+}
