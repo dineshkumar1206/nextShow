@@ -234,7 +234,7 @@ const MovieReviewsSection = () => {
       </div>
 
       {/* REVIEW GRID */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[500px] overflow-y-scroll pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[500px] overflow-y-scroll pr-4 custom-scroll">
         {filteredReviews.length > 0 ? (
           // reviewsToShow எண்ணிக்கையைப் பயன்படுத்தி ரிவியூக்களைக் காட்டவும்
           filteredReviews
@@ -245,10 +245,10 @@ const MovieReviewsSection = () => {
             No reviews found for this selection.
           </p>
         )}
-      </div> */}
+      </div>
 
       {/* VIEW MORE BUTTON (அனைத்தும் காட்டப்பட்டால் பட்டன் மறையும்) */}
-      {/* {filteredReviews.length > INITIAL_REVIEWS_COUNT && !allReviewsLoaded && (
+      {filteredReviews.length > INITIAL_REVIEWS_COUNT && !allReviewsLoaded && (
         <div className="flex justify-center mt-10">
           <button
             onClick={handleLoadMore}
@@ -258,14 +258,14 @@ const MovieReviewsSection = () => {
             remaining)
           </button>
         </div>
-      )} */}
+      )}
 
       {/* அனைத்து ரிவியூக்களும் காட்டப்பட்டுவிட்டால் ஒரு மெசேஜ் */}
-      {/* {allReviewsLoaded && filteredReviews.length > INITIAL_REVIEWS_COUNT && (
+      {allReviewsLoaded && filteredReviews.length > INITIAL_REVIEWS_COUNT && (
         <p className="text-center text-green-400 mt-10 font-medium">
           You have viewed all {filteredReviews.length} reviews.
         </p>
-      )} */}
+      )}
     </div>
   );
 };

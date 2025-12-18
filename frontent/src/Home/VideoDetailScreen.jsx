@@ -1,101 +1,87 @@
 import React, { useState, useEffect, useRef } from "react";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import Slider from "react-slick";
+
+// Slick CSS imports
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const videoPlaylist = [
   {
-    title: "Jananayagan Teaser",
-    year: 2025,
-    duration: "1m 45s",
-    rating: "U/A 16+",
-    languages: "Tamil • Telugu • Hindi • Kannada • Malayalam",
+    id: 1,
+    movieName: "Jana Nayagan",
+    title: "Jana Nayagan  Joseph Vijay  H. Vinoth",
     description:
-      "A gripping political-action teaser showcasing the rise of an unexpected leader. Filled with tense moments, fiery dialogues, and powerful visuals.",
-    genres: ["Action", "Political Thriller", "Drama"],
-    src: "/video/jn.mp4",
+      "Jana Nayagan ('People's Hero') is an upcoming Indian Tamil-language action thriller...",
+    src: "/video/jn.mp4", // Video available
+    thumbnail: "/thumbnail/jana.jpg",
+    date: "JAN 9, 2026",
   },
   {
-    title: "Coolie Trailer",
-    year: 2025,
-    duration: "3m 2s",
-    rating: "U/A 16+",
-    languages: "Tamil • Telugu • Hindi • Kannada • Malayalam",
+    id: 2,
+    movieName: "Madharasi",
+    title: "Madharasi Movie News starring Sivakarthikeyan",
     description:
-      "Rajinikanth teams up with Lokesh Kanagaraj in a high-voltage mass-action entertainer...",
-    genres: ["Action", "Mass", "Thriller"],
-    src: "/video/coolie.mp4",
+      "Madharaasi (2025) is an AR Murugadoss-directed Tamil action thriller starring Sivakarthikeyan as Raghu, a man with mental issues who develops superpowers from trauma, fighting a gang importing guns into Tamil Nadu, with themes of love healing him and confronting gun culture, featuring strong action, Anirudh's music, and a compelling performance from Sivakarthikeyan as a vigilante hero. ",
+    src: "/video/madarasi-trailer.mp4", // No video (Button hidden)
+    thumbnail: "/thumbnail/madara.jpg",
+    date: "FEB 15, 2025",
   },
   {
-    title: "Jailer Teaser",
-    year: 2023,
-    duration: "1m 30s",
-    rating: "U/A 16+",
-    languages: "Tamil • Telugu • Hindi • Kannada • Malayalam",
-    description: "Rajinikanth returns in a powerful avatar.",
-    genres: ["Thriller", "Mass", "Crime"],
-    src: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    id: 3,
+    movieName: "Sardar 2",
+    title: "Sardar 2 Movie News from Nextshow",
+    description:
+      "Sardar 2 is a high-stakes Tamil spy-action sequel to the 2022 hit, directed by P.S. Mithran, with Karthi reprising his role as the secret agent, taking on a massive threat known as 1Black Dagger1 (played by S.J. Suryah) in a bigger, more intense political thriller with new additions like Malavika Mohanan and Ashika Ranganath, promising global espionage and action when it releases in late 2025. ",
+    src: "/video/sardar-2.mp4",
+    thumbnail: "/thumbnail/sardar-2.jpg",
+    date: "JUN 7, 2025",
+  },
+  {
+    id: 4,
+    movieName: "Test (2025)",
+    title: "Test (2025)",
+    description:
+      "Test (2025) is a Tamil hyperlink sports drama about three individuals whose lives intertwine around an India-Pakistan cricket match",
+    src: "/video/test.mp4",
+    thumbnail: "/thumbnail/test.jpg",
+    date: "APR 4, 2025",
+  },
+  {
+    id: 5,
+    movieName: "Thanal (2025)",
+    title: "Test (2025)",
+    description:
+      "Thanal (2025) is a Tamil action-thriller about a former army man (Ashwin Kakumanu) seeking revenge against police officers involved in a past incident, clashing with a duty-bound new constable (Atharvaa Murali) caught in the escalating conflict, exploring themes of vengeance, duty, and moral choices over one intense, fateful night",
+    src: "/video/thanal.mp4",
+    thumbnail: "/thumbnail/thanal.jpg",
+    date: "SEP 12, 2025",
   },
 ];
 
 export default function VideoDetailScreen() {
-  const previewVideoRef = useRef(null);
-  const fullVideoRef = useRef(null);
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isWatchingFull, setIsWatchingFull] = useState(false);
-
-  // ⭐ TEXT Hide state
-  const [showText, setShowText] = useState(true);
-
+  const videoRef = useRef(null);
+  const fullVideoRef = useRef(null);
+  const sliderRef = useRef(null);
   const currentVideo = videoPlaylist[currentIndex];
 
-  // ⭐ AutoPlay + Hide text after 7 sec
+  // Auto-play preview video when index changes
   useEffect(() => {
-    if (!isWatchingFull) {
-      const video = previewVideoRef.current;
-      if (video) {
-        video.muted = true;
-        video.play().catch(() => {});
-      }
+    if (!isWatchingFull && videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().catch(() => {});
     }
-
-    // text show again when video changes
-    setShowText(true);
-
-    // 7 sec hide timer
-    const timer = setTimeout(() => setShowText(false), 7000);
-
-    return () => clearTimeout(timer);
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(currentIndex);
+    }
   }, [currentIndex, isWatchingFull]);
 
-  // ⭐ When user manually clicks next/prev → show text for 5 sec
-  const showTextTemporarily = () => {
-    setShowText(true);
-    setTimeout(() => setShowText(false), 5000);
-  };
-
-  // ⭐ Auto next video
-  const handlePreviewEnd = () => {
-    setCurrentIndex((prev) => (prev + 1 < videoPlaylist.length ? prev + 1 : 0));
-  };
-
-  // ⭐ Manual NEXT
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1 < videoPlaylist.length ? prev + 1 : 0));
-    showTextTemporarily();
-  };
-
-  // ⭐ Manual PREV
-  const handlePrev = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? videoPlaylist.length - 1 : prev - 1
-    );
-    showTextTemporarily();
-  };
-
-  // ⭐ Watch Now
+  // Handle Watch Now Action
   const handleWatchNow = () => {
     setIsWatchingFull(true);
-
+    // Give a small timeout for the DOM to render the fullVideo element
     setTimeout(() => {
       if (fullVideoRef.current) {
         fullVideoRef.current.muted = false;
@@ -104,106 +90,34 @@ export default function VideoDetailScreen() {
     }, 200);
   };
 
-  // ⭐ Exit Full
   const handleExitFullVideo = () => {
-    if (fullVideoRef.current) {
-      fullVideoRef.current.pause();
-      fullVideoRef.current.currentTime = 0;
-    }
     setIsWatchingFull(false);
   };
 
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    arrows: false,
+    responsive: [
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
+      { breakpoint: 600, settings: { slidesToShow: 2 } },
+    ],
+  };
+
   return (
-    <div className="relative h-screen text-white">
-      {/* ⭐ PREVIEW MODE */}
-      {!isWatchingFull && (
-        <>
-          <video
-            ref={previewVideoRef}
-            src={currentVideo.src}
-            className="absolute inset-0 w-full h-full object-cover"
-            autoPlay
-            muted
-            playsInline
-            onEnded={handlePreviewEnd}
-          />
-
-          {/* Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-
-          {/* ⭐ PREV BUTTON */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2
-            bg-black/30 hover:bg-black/50 text-white p-3 rounded-full 
-            text-2xl md:text-4xl z-30"
-          >
-            <HiChevronLeft />
-          </button>
-
-          {/* ⭐ NEXT BUTTON */}
-          <button
-            onClick={handleNext}
-            className="absolute right-0 md:right-4 top-1/2 -translate-y-1/2
-            bg-black/30 hover:bg-black/50 text-white p-3 rounded-full 
-            text-2xl md:text-4xl z-30"
-          >
-            <HiChevronRight />
-          </button>
-
-          {/* ⭐ TEXT CONTENT (Hide after 7 sec) */}
-          <div
-            className={`
-              relative z-20 flex flex-col justify-center
-              h-screen px-6 md:px-16 max-w-2xl pt-[90px]
-              transition-opacity duration-700
-              ${showText ? "opacity-100" : "opacity-0 pointer-events-none"}
-            `}
-          >
-            <h1 className="text-3xl md:text-6xl text-orange-400 font-bold mb-4">
-              {currentVideo.title}
-            </h1>
-
-            <p className="text-md text-slate-100 mb-4">
-              {currentVideo.year} • {currentVideo.rating} •{" "}
-              {currentVideo.duration} • {currentVideo.languages}
-            </p>
-
-            <p className="text-md mb-4">{currentVideo.description}</p>
-
-            <div className="mb-8">
-              {currentVideo.genres.map((genre) => (
-                <span key={genre} className="mr-4 text-gray-300">
-                  {genre}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* ⭐ WATCH NOW BUTTON ALWAYS VISIBLE */}
-          <div className="absolute bottom-24 left-6 md:left-16 z-30">
-            <button
-              onClick={handleWatchNow}
-              className="border-red-600/40 border text-white text-lg md:text-xl rounded-lg 
-              py-3 w-[200px] md:w-[240px] shadow-xl hover:bg-red-700/20 cursor-pointer transition"
-            >
-              Watch Now
-            </button>
-          </div>
-        </>
-      )}
-
-      {/* ⭐ FULL VIDEO PLAYER */}
+    <div className="flex flex-col md:flex-row h-screen bg-[#0a0d14] text-white overflow-hidden mt-20 md:mt-0 ">
+      {/* FULL VIDEO PLAYER OVERLAY */}
       {isWatchingFull && (
-        <div className="absolute inset-0 bg-black flex flex-col">
+        <div className="fixed inset-0 z-[100] bg-black flex flex-col">
           <button
             onClick={handleExitFullVideo}
-            className="absolute top-5 left-5 z-50 bg-white/20 hover:bg-white/40 
-            text-white px-4 py-2 rounded-lg backdrop-blur-md"
+            className="absolute top-5 left-5 z-[110] bg-white/20 hover:bg-white/40 text-white px-6 py-2 rounded-lg backdrop-blur-md transition"
           >
-            ⬅ Back to Home
+            ← Back
           </button>
-
           <video
             ref={fullVideoRef}
             src={currentVideo.src}
@@ -213,6 +127,126 @@ export default function VideoDetailScreen() {
           />
         </div>
       )}
+
+      {/* LEFT SIDE: MAIN PLAYER & CAROUSEL */}
+      <div className="w-full md:w-[70%] flex flex-col relative border-r border-gray-800">
+        <div className="relative flex-1 bg-black group overflow-hidden">
+          {/* Preview Video */}
+          <video
+            ref={videoRef}
+            src={currentVideo.src}
+            className="w-full h-full object-cover"
+            muted
+            playsInline
+          />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-transparent to-transparent"></div>
+
+          {/* Navigation Controls */}
+          <button
+            onClick={() =>
+              setCurrentIndex((prev) =>
+                prev > 0 ? prev - 1 : videoPlaylist.length - 1
+              )
+            }
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 p-3 rounded-full hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <HiChevronLeft size={30} />
+          </button>
+
+          <button
+            onClick={() =>
+              setCurrentIndex((prev) => (prev + 1) % videoPlaylist.length)
+            }
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 p-3 rounded-full hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
+          >
+            <HiChevronRight size={30} />
+          </button>
+
+          {/* Title and Action Button */}
+          <div className="absolute bottom-10 left-10 hidden md:block z-20">
+            <h2 className="text-4xl font-bold drop-shadow-2xl text-white tracking-tighter mb-4">
+              {currentVideo.movieName.split("|")[0]}
+            </h2>
+
+            {/* Conditional Rendering for Watch Now Button */}
+            {currentVideo.src ? (
+              <button
+                onClick={handleWatchNow}
+                className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-10 rounded-md transition transform hover:scale-105 shadow-lg flex items-center gap-2"
+              >
+                <span>Watch Now</span>
+              </button>
+            ) : (
+              <p className="text-gray-400 italic">No Video Available</p>
+            )}
+          </div>
+        </div>
+
+        {/* BOTTOM: THUMBNAIL CAROUSEL */}
+        <div className="h-36 bg-[#0f121a] p-4 border-t border-gray-800">
+          <Slider ref={sliderRef} {...settings}>
+            {videoPlaylist.map((item, index) => (
+              <div key={item.id} className="px-2 outline-none">
+                <div
+                  onClick={() => setCurrentIndex(index)}
+                  className={`relative cursor-pointer transition-all duration-300 rounded-md overflow-hidden border-2 h-24 ${
+                    currentIndex === index
+                      ? "border-[#f98603] scale-95 shadow-lg"
+                      : "border-transparent opacity-50 hover:opacity-100"
+                  }`}
+                >
+                  <img
+                    src={item.thumbnail}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            ))}
+          </Slider>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE: NEWS LIST */}
+      <div className="w-full md:w-[30%] bg-[#0d1017] flex flex-col border-l mt-20 border-gray-800">
+        <div className="p-5 border-b border-gray-800">
+          <h3 className="text-gray-400 uppercase text-xs font-bold tracking-[0.2em]">
+            Latest Movie News
+          </h3>
+        </div>
+
+        <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-8">
+          {videoPlaylist.map((movie) => (
+            <div
+              key={movie.id}
+              className="flex gap-4 group transition-all duration-300 border-b border-white/5 pb-4 last:border-0 cursor-pointer"
+            >
+              <div className="flex-1">
+                <h4 className="text-[15px] font-semibold text-white/70 group-hover:text-blue-400 leading-tight mb-2 transition-colors">
+                  {movie.title}
+                </h4>
+                <p className="text-gray-500 text-[11px] line-clamp-2 leading-relaxed font-light">
+                  {movie.description}
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center shrink-0">
+                <div className="w-20 h-14 rounded overflow-hidden shadow-lg grayscale group-hover:grayscale-0 transition-all duration-500">
+                  <img
+                    src={movie.thumbnail}
+                    alt=""
+                    className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform"
+                  />
+                </div>
+                <div className="mt-2 bg-[#1a1e26] px-2 py-1 rounded text-[9px] text-gray-500 font-bold uppercase whitespace-nowrap group-hover:text-white transition-colors">
+                  {movie.date.split(",")[0]}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

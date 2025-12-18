@@ -3,6 +3,7 @@ import VideoDetailScreen from "./VideoDetailScreen";
 import UpcomingMoviesCarousel from "./UpcomingMoviesCarousel";
 import NewReleaseMoviesCarousel from "./NewReleaseMoviesCarousel";
 import MovieReviewsSection from "./MovieReviewsSection";
+import YoutubeVideoReviews from "./YoutubeVideoreviews";
 
 const Home = () => {
   return (
@@ -10,7 +11,8 @@ const Home = () => {
       <VideoDetailScreen />
       <UpcomingMoviesCarousel />
       <NewReleaseMoviesCarousel />
-     {/* <MovieReviewsSection /> */}
+      <MovieReviewsSection />
+      {/* <YoutubeVideoReviews /> */}
     </div>
   );
 };
