@@ -1,10 +1,8 @@
 // src/sections/MovieReviewsSection.js
-
 import React, { useState, useMemo } from "react";
-import ReviewCard from "./ReviewCard";
+import ReviewCard from "./StreamingReviewCard";
 
-// src/data/ReviewData.js - இங்கே அதிக டேட்டா சேர்க்கப்பட்டுள்ளது (உங்கள் தேவைக்காக)
-// இந்த டேட்டாவை நீங்கள் தனி ஃபைலில் இருந்து இறக்குமதி (import) செய்ய வேண்டும்
+// Data
 export const MOVIE_REVIEWS_DATA = [
   {
     id: 1,
@@ -159,51 +157,62 @@ export const MOVIE_REVIEWS_DATA = [
   },
 ];
 
-// ரிவியூ வகைகளுக்கான டேப் லிஸ்ட்
+// 1. Updated Tab Names
 const REVIEW_TABS = [
-  { id: "LATEST", label: "Latest Reviews" },
-  { id: "CRITIC", label: "Top Critic Reviews" },
-  { id: "AUDIENCE", label: "Audience Reviews" },
+  { id: "Upcoming", label: "Upcoming" },
+  { id: "New", label: "New Releases" },
+  { id: "Trending Now", label: "Trending Now" },
 ];
 
-// ஆரம்பத்தில் காட்ட வேண்டிய ரிவியூக்களின் எண்ணிக்கை
 const INITIAL_REVIEWS_COUNT = 9;
-// ஒவ்வொரு முறையும் "Load More" கொடுக்கும்போது சேர்க்க வேண்டிய ரிவியூக்களின் எண்ணிக்கை
 const REVIEWS_PER_LOAD = 6;
 
 const MovieReviewsSection = () => {
-  // 1. ஆரம்ப ஸ்டேட்டை செட் செய்யவும்
-  const [activeTab, setActiveTab] = useState("LATEST");
-  // 2. காட்ட வேண்டிய ரிவியூக்களின் எண்ணிக்கையைக் கட்டுப்படுத்த
+  const [activeTab, setActiveTab] = useState("Upcoming");
   const [reviewsToShow, setReviewsToShow] = useState(INITIAL_REVIEWS_COUNT);
 
-  // 3. activeTab மாறும் போது reviewsToShow-ஐ மீண்டும் ஆரம்ப நிலைக்கு மாற்றவும் (Reset)
   const handleTabChange = (tabId) => {
     setActiveTab(tabId);
-    setReviewsToShow(INITIAL_REVIEWS_COUNT); // புதிய டேப்-க்கு மாறும்போது, ஆரம்ப 9-ஐ மட்டும் காட்டவும்
+    setReviewsToShow(INITIAL_REVIEWS_COUNT);
   };
 
-  // டேட்டா வடிகட்டல் (Data Filtering Logic)
+  // 2. Updated Filtering Logic based on New Tabs
   const filteredReviews = useMemo(() => {
     let reviews = [...MOVIE_REVIEWS_DATA];
+    const today = new Date();
+    const currentYear = today.getFullYear();
 
-    if (activeTab === "LATEST") {
-      return reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
-    } else {
-      return reviews.filter((review) => review.reviewType === activeTab);
+    if (activeTab === "Upcoming") {
+      // Future dates ulla movies-a filter pannuvom (Example logic)
+      return reviews.filter(
+        (review) =>
+          new Date(review.date) > today || review.movie.includes("2025")
+      );
     }
+
+    if (activeTab === "New") {
+      // Recent releases (Current year)
+      return reviews.filter((review) =>
+        review.movie.includes(currentYear.toString())
+      );
+    }
+
+    if (activeTab === "Trending Now") {
+      // High rating ulla movies-a trending-ah kaamikkalam
+      return reviews
+        .filter((review) => review.rating >= 4.0)
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
+
+    return reviews;
   }, [activeTab]);
 
-  // "Load More" பட்டனைக் கிளிக் செய்தால்
   const handleLoadMore = () => {
-    // தற்போதுள்ள எண்ணிக்கையுடன் REVIEWS_PER_LOAD ஐ கூட்டவும்
     setReviewsToShow((prevCount) => prevCount + REVIEWS_PER_LOAD);
   };
 
-  // அனைத்து ரிவியூக்களும் காட்டப்பட்டுவிட்டதா என்று சரிபார்க்க
   const allReviewsLoaded = filteredReviews.length <= reviewsToShow;
 
-  // டேப் UI ஸ்டைலிங்
   const getTabClasses = (tabId) =>
     `py-2 px-6 text-[13px] md:text-md lg:text-lg font-semibold transition-all duration-300 
      ${
@@ -214,9 +223,8 @@ const MovieReviewsSection = () => {
 
   return (
     <div className="bg-[#0f0f0f] pt-10 px-8">
-      {/* SECTION HEADER */}
       <h2 className="text-white text-xl md:text-3xl font-bold mb-6">
-        Movie Reviews
+        Streaming Now
       </h2>
 
       {/* TAB NAVIGATION */}
@@ -224,7 +232,6 @@ const MovieReviewsSection = () => {
         {REVIEW_TABS.map((tab) => (
           <button
             key={tab.id}
-            // onClick-ஐ handleTabChange மூலம் மாற்றவும்
             onClick={() => handleTabChange(tab.id)}
             className={getTabClasses(tab.id)}
           >
@@ -234,36 +241,34 @@ const MovieReviewsSection = () => {
       </div>
 
       {/* REVIEW GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[500px] overflow-y-scroll pr-4 custom-scroll">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[600px] overflow-y-scroll pr-4 custom-scroll">
         {filteredReviews.length > 0 ? (
-          // reviewsToShow எண்ணிக்கையைப் பயன்படுத்தி ரிவியூக்களைக் காட்டவும்
           filteredReviews
             .slice(0, reviewsToShow)
             .map((review) => <ReviewCard key={review.id} review={review} />)
         ) : (
-          <p className="text-gray-500 col-span-3">
-            No reviews found for this selection.
+          <p className="text-gray-500 col-span-3 py-10 text-center">
+            No items found for {activeTab}.
           </p>
         )}
       </div>
 
-      {/* VIEW MORE BUTTON (அனைத்தும் காட்டப்பட்டால் பட்டன் மறையும்) */}
+      {/* VIEW MORE BUTTON */}
       {filteredReviews.length > INITIAL_REVIEWS_COUNT && !allReviewsLoaded && (
         <div className="flex justify-center mt-10">
           <button
             onClick={handleLoadMore}
             className="py-3 px-8 bg-gray-700 text-white font-semibold rounded-lg hover:bg-red-600 transition duration-300"
           >
-            Load More Reviews ({filteredReviews.length - reviewsToShow}{" "}
+            View More {activeTab} ({filteredReviews.length - reviewsToShow}{" "}
             remaining)
           </button>
         </div>
       )}
 
-      {/* அனைத்து ரிவியூக்களும் காட்டப்பட்டுவிட்டால் ஒரு மெசேஜ் */}
       {allReviewsLoaded && filteredReviews.length > INITIAL_REVIEWS_COUNT && (
-        <p className="text-center text-green-400 mt-10 font-medium">
-          You have viewed all {filteredReviews.length} reviews.
+        <p className="text-center text-green-400 mt-10 font-medium pb-10">
+          You have viewed all {activeTab} content.
         </p>
       )}
     </div>

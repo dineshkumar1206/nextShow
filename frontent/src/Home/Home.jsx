@@ -1,17 +1,19 @@
 import React from "react";
 import VideoDetailScreen from "./VideoDetailScreen";
-import UpcomingMoviesCarousel from "./UpcomingMoviesCarousel";
-import NewReleaseMoviesCarousel from "./NewReleaseMoviesCarousel";
-import MovieReviewsSection from "./MovieReviewsSection";
+import UpcomingMoviesCarousel from "../NewMovies/UpcomingMoviesCarousel";
+import NewReleaseMoviesCarousel from "../NewMovies/NewReleaseMoviesCarousel";
 import YoutubeVideoReviews from "./YoutubeVideoreviews";
+import MovieStreamingSection from "./MovieStreamingSection";
+import MoviesSection from "./MoviesSection";
 
 const Home = () => {
   return (
     <div className="pb-20">
       <VideoDetailScreen />
-      <UpcomingMoviesCarousel />
-      <NewReleaseMoviesCarousel />
-      <MovieReviewsSection />
+      {/* <UpcomingMoviesCarousel />
+      <NewReleaseMoviesCarousel /> */}
+      <MovieStreamingSection />
+      <MoviesSection />
       {/* <YoutubeVideoReviews /> */}
     </div>
   );

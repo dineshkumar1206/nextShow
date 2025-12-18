@@ -1,17 +1,23 @@
 import React, { useState } from "react";
 import VideoPlayer from "../Components/VideoPlayer";
+import { FaPlay, FaRegThumbsUp, FaRegClock, FaEye } from "react-icons/fa"; // Icons-kaga sethukonga
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 
 const youtubeReviews = [
   {
     id: 1,
     movieName: "Jana Nayagan",
-    title: "Jana Nayagan trailer",
-    channelName: "Behindwoods",
-    reviewer: "Reviewer 1",
+    title: "Jana Nayagan - First Roar Glimpse Public Review | Thalapathy Vijay",
+    channelName: "Madurai bro",
+    reviewer: "Public Review",
     language: "Tamil",
-    //thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg",
+    duration: "0:23",
+    views: "46K views",
+    postedTime: "2 weeks ago",
+    likes: "2.7K",
+    rating: "4.8",
     videoOptions: {
-      autoplay: true,
+      autoplay: false,
       controls: true,
       responsive: true,
       fluid: true,
@@ -27,26 +33,99 @@ const youtubeReviews = [
   {
     id: 2,
     movieName: "Coolie",
-    title: "Jana Nayagan trailer",
-    channelName: "Film Companion",
-    reviewer: "Baradwaj Rangan",
-    language: "English",
-    //thumbnail: "https://img.youtube.com/vi/y6120QOlsfU/mqdefault.jpg",
+    title: "Coolie - Official Teaser | Rajinikanth | Lokesh Kanagaraj",
+    channelName: "Bingoo Box",
+    reviewer: "Official Review",
+    language: "Tamil",
+    duration: "3:53",
+    views: "310M views",
+    postedTime: "5 months ago",
+    likes: "3.4M",
+    rating: "3.9",
     videoOptions: {
-      autoplay: true,
+      autoplay: false,
       controls: true,
       responsive: true,
       fluid: true,
       techOrder: ["youtube"],
       sources: [
         {
-          src: "https://www.youtube.com/watch?v=y6120QOlsfU",
+          src: "https://youtu.be/rRtPAHBi0vo?si=BO-khVrBPcz3nNsn",
+          type: "video/youtube",
+        },
+      ],
+    },
+  },
+  {
+    id: 3,
+    movieName: "idli kadai",
+    title: "idli kadai - Review | Dhanush | Arun Vijay",
+    channelName: "Bingoo Box",
+    reviewer: "Official Review",
+    language: "Tamil",
+    duration: "1:08",
+    views: "195k views",
+    postedTime: "2 months ago",
+    likes: "9.2k",
+    rating: "3.9",
+    videoOptions: {
+      autoplay: false,
+      controls: true,
+      responsive: true,
+      fluid: true,
+      techOrder: ["youtube"],
+      sources: [
+        {
+          src: "https://youtube.com/shorts/ygjJvQmJMQo?si=nAga0j02jyNTQ8f0",
           type: "video/youtube",
         },
       ],
     },
   },
 ];
+
+// ⭐ Arrows Reusable
+const NextArrow = ({ className, style, onClick }) => (
+  <div className="hidden md:hidden lg:block">
+    <div
+      className={`
+      ${className}  !right-[-25px] !z-20 !w-12 !h-12 
+      flex items-center justify-center 
+      rounded-full 
+      bg-gradient-to-br from-[#ffffff25] to-[#00000055]
+      border border-white/20 
+      backdrop-blur-md
+      hover:from-[#ffffff40] hover:to-[#00000080]
+      transition-all duration-300 cursor-pointer shadow-lg
+    `}
+      style={{ ...style, display: "flex" }}
+      onClick={onClick}
+    >
+      <HiChevronRight className="text-white text-3xl drop-shadow-xl" />
+    </div>
+  </div>
+);
+
+const PrevArrow = ({ className, style, onClick }) => (
+  <div className="hidden md:hidden lg:block">
+    <div
+      className={`
+      ${className} !left-[-25px] !z-20 !w-12 !h-12 
+      flex items-center justify-center 
+      rounded-full 
+      bg-gradient-to-br from-[#ffffff25] to-[#00000055]
+      border border-white/20 
+      backdrop-blur-md
+      hover:from-[#ffffff40] hover:to-[#00000080]
+      transition-all duration-300 cursor-pointer shadow-lg
+    `}
+      style={{ ...style, display: "flex" }}
+      onClick={onClick}
+    >
+      <HiChevronLeft className="text-white text-3xl drop-shadow-xl" />
+    </div>
+  </div>
+);
 
 export default function YoutubeVideoReviews() {
   const [activeTab, setActiveTab] = useState("Tamil");
@@ -64,40 +143,52 @@ export default function YoutubeVideoReviews() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  // Video mudinthavudan adutha video-vukku sella
   const handleNextVideo = (currentId) => {
     const currentIndex = filteredReviews.findIndex((r) => r.id === currentId);
     if (currentIndex !== -1 && currentIndex + 1 < filteredReviews.length) {
       setSelectedVideoId(filteredReviews[currentIndex + 1].id);
     } else {
-      setSelectedVideoId(null); // List mudinthuvittathu
+      setSelectedVideoId(null);
     }
   };
 
   const getFormatLink = (options) => {
     let sourceLink = options.sources[0].src;
-    //console.log("getformatlink", sourceLink);
-    // Shorts link or normal short link-ai format seiya
     if (sourceLink.includes("shorts/")) {
       sourceLink = sourceLink.replace("shorts/", "watch?v=");
     } else if (sourceLink.includes("youtu.be/")) {
-      // youtu.be/ID format-ai watch?v=ID-ku matha (Optional but safer)
       sourceLink = sourceLink.replace("youtu.be/", "youtube.com/watch?v=");
     }
-
     return {
       ...options,
-      sources: [
-        {
-          ...options.sources[0],
-          src: sourceLink,
-        },
-      ],
+      sources: [{ ...options.sources[0], src: sourceLink }],
     };
   };
 
+  const settings = {
+    className: "center",
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 5,
+    speed: 500,
+    dots: false,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 3, centerPadding: "40px" },
+      },
+      {
+        breakpoint: 600,
+        settings: { slidesToShow: 1, centerPadding: "50px", arrows: false },
+      },
+    ],
+  };
+
   return (
-    <div className="bg-[#0a0d14] p-6 md:p-16 text-white border-t border-gray-800">
+    <div className="p-6 md:p-16 text-white border-t border-gray-800 ">
       <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
         <span className="text-red-600">YouTube</span> Latest Movie Reviews
       </h2>
@@ -109,7 +200,7 @@ export default function YoutubeVideoReviews() {
             key={lang}
             onClick={() => {
               setActiveTab(lang);
-              setSelectedVideoId(null); // Tab maarum pothu player-ai close panna
+              setSelectedVideoId(null);
             }}
             className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 border ${
               activeTab === lang
@@ -129,9 +220,11 @@ export default function YoutubeVideoReviews() {
           const autoThumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
           return (
-            <div key={review.id} className="group flex flex-col">
-              {/* YouTube Player or Thumbnail */}
-              <div className="relative aspect-video rounded-xl overflow-hidden mb-4 border border-gray-800 group-hover:border-red-600 transition-colors bg-black">
+            <div
+              key={review.id}
+              className="group flex flex-col bg-[#161921] rounded-2xl overflow-hidden border border-gray-800 hover:border-red-600/50 transition-all shadow-xl"
+            >
+              <div className="relative aspect-video overflow-hidden bg-black">
                 {selectedVideoId === review.id ? (
                   <VideoPlayer
                     videoOptions={getFormatLink(review.videoOptions)}
@@ -145,34 +238,49 @@ export default function YoutubeVideoReviews() {
                     <img
                       src={autoThumbnail}
                       alt={review.movieName}
-                      className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity"
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                     />
-                    {/* Custom Play Button Overlay */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="bg-red-600 p-4 rounded-full shadow-lg transform group-hover:scale-110 transition-transform">
-                        <svg
-                          className="w-8 h-8 text-white"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.333-5.89a1.5 1.5 0 000-2.538L6.3 2.841z" />
-                        </svg>
+
+                    <span className="absolute bottom-2 right-2 bg-black/80 text-[10px] px-1.5 py-0.5 rounded font-bold">
+                      {review.duration}
+                    </span>
+
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-all">
+                      <div className="bg-red-600 p-3 rounded-full shadow-lg transform group-hover:scale-110 transition-transform">
+                        <FaPlay className="text-white text-xl" />
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Content Details */}
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold group-hover:text-red-500 transition-colors">
-                  {review.movieName}
-                </h3>
-                <div className="flex items-center justify-between text-sm">
-                  <p className="text-gray-400 font-medium">
+              <div className="p-4 flex flex-col flex-1">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-red-500 font-bold text-xs uppercase tracking-wider">
                     {review.channelName}
-                  </p>
-                  <span className="text-gray-500">by {review.reviewer}</span>
+                  </span>
+                  <span className="text-yellow-500 text-xs font-bold">
+                    ⭐ {review.rating}
+                  </span>
+                </div>
+
+                <h3 className="text-md font-bold leading-snug mb-3 line-clamp-2  transition-colors">
+                  {review.title}
+                </h3>
+
+                {/* Meta Info Footer */}
+                <div className="mt-auto pt-3 border-t border-gray-800 flex items-center justify-between text-[11px] text-gray-500">
+                  <div className="flex items-center gap-3">
+                    <span className="flex items-center gap-1">
+                      <FaEye size={12} /> {review.views}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <FaRegThumbsUp size={11} /> {review.likes}
+                    </span>
+                  </div>
+                  <span className="flex items-center gap-1">
+                    <FaRegClock size={11} /> {review.postedTime}
+                  </span>
                 </div>
               </div>
             </div>

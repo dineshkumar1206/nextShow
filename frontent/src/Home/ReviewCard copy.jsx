@@ -19,6 +19,8 @@ const ReviewCard = ({ review }) => {
           <span className="text-gray-400">/ 5</span>
         </div>
         {/* Movie Title */}
+        {/* Movie Title */}
+        {/* Movie Title */}
         <h3 className="text-lg font-semibold text-white truncate max-w-[60%] text-right">
           {review.movie}
         </h3>
