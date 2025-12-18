@@ -5,7 +5,7 @@ import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
 import NewMovies from "./NewMovies/NewMovies";
 import StreamingNow from "./StreamingNow/StreamingNow";
-import ScrollToTop from "./Components/ScrolltoTop";
+import ScrollToTop from "./Components/ScrollToTop";
 // import "swiper/css";
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
