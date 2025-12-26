@@ -78,3 +78,21 @@ body {
 .slick-left-align .slick-slide {
   height: inherit !important;
 }
+
+/* Progress bar-oda main color */
+#nprogress .bar {
+  background: #fb923c !important; /* Unga custom color (e.g., Orange) */
+  height: 3px !important; /* Bar-oda thickness */
+  z-index: 10000 !important; /* Navbar-ku mela theriyanum-na */
+}
+
+/* Progress bar-oda right side-la irukura antha light glow (peg) */
+#nprogress .peg {
+  box-shadow: 0 0 30px #8d8782, 0 0 15px #dbb697 !important;
+}
+
+/* Spinner (antha rounding loading circle) oda color */
+#nprogress .spinner-icon {
+  border-top-color: #fb923c !important;
+  border-left-color: #fb923c !important;
+}

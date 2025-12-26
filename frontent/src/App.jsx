@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Home from "./Home/Home";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
@@ -9,12 +9,30 @@ import ScrollToTop from "./Components/ScrollToTop";
 import Dashboard from "./ADMIN/Dashboard/Dashboard";
 import DashboardHome from "./ADMIN/Dashboard/DashboardHome";
 import Trailer from "./Trailer/TrailerPage";
+import NProgress from "nprogress"; // Import NProgress
+import "nprogress/nprogress.css"; // Import CSS
+import Login from "./ADMIN/Login";
+import AdminProtect from "./ADMIN/AdminComponents/AdminProtect";
 // import "swiper/css";
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
 
 const App = () => {
   const location = useLocation();
+
+  NProgress.configure({
+    showSpinner: false,
+  });
+
+  useEffect(() => {
+    NProgress.start();
+    // small delay for smooth UX
+    const timer = setTimeout(() => {
+      NProgress.done();
+    }, 1400);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   const hideLayout =
     location.pathname.startsWith("/admin") ||
@@ -29,10 +47,14 @@ const App = () => {
         <Route path="/new" element={<NewMovies />} />
         <Route path="/stream" element={<StreamingNow />} />
         <Route path="/trailer" element={<Trailer />} />
+        <Route path="/auth/login" element={<Login />} />
 
         {/* Admin Dashboard */}
-        <Route path="admin" element={<Dashboard />}>
-          <Route path="dashboard" element={<DashboardHome />} />
+        <Route path="/admin" element={<AdminProtect />}>
+          <Route path="" element={<Dashboard />}>
+            <Route index element={<Navigate to="home" replace />} />
+            <Route path="home" element={<DashboardHome />} />
+          </Route>
         </Route>
       </Routes>
 

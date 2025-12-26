@@ -8,7 +8,7 @@ const AdminNavbar = () => {
       {/* 1. Dashboard Title & Search */}
       <div className="flex items-center space-x-6">
         <h1 className="text-lg font-black text-white uppercase tracking-tighter">
-          Admin <span className="text-red-600">Dashboard</span>
+          Admin <span className="text-orange-400">Dashboard</span>
         </h1>
 
         {/* Simple Search Bar for Movies */}

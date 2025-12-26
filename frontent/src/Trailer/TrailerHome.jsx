@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEye, FaPlay, FaRegClock } from "react-icons/fa";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import Slider from "react-slick";
@@ -290,7 +290,23 @@ const PrevArrow = ({ className, style, onClick }) => (
 );
 
 const TrailerHome = () => {
-  const [selectedVideoId, setSelectedVideoId] = useState(null);
+  const [activeVideoId, setActiveVideoId] = useState(null);
+  const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // 🔥 Mobile browser fix – force after load
+    setTimeout(() => {
+      setViewportWidth(window.innerWidth);
+    }, 300);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const getYouTubeID = (url) => {
     const regExp =
@@ -304,13 +320,13 @@ const TrailerHome = () => {
     dots: false,
     // infinite: itemCount > 5, // 5 item-ku mela iruntha mattum infinite loop aagum
     speed: 500,
-
+    infinite: true,
     slidesToShow: 5,
     slidesToScroll: 1,
     centerMode: false, // Ithu thaan left-la irunthu start panna vaikum
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    beforeChange: () => setSelectedVideoId(null),
+
     afterChange: () => {
       // safety cleanup
       const iframes = document.querySelectorAll("iframe");
@@ -321,25 +337,19 @@ const TrailerHome = () => {
     responsive: [
       {
         breakpoint: 1280,
-        settings: {
-          slidesToShow: 4,
-          infinite: itemCount > 4,
-        },
+        settings: { slidesToShow: 4 },
       },
       {
         breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          infinite: itemCount > 3,
-        },
+        settings: { slidesToShow: 3 },
       },
       {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          infinite: itemCount > 2,
-          arrows: false,
-        },
+        breakpoint: 768, // Tablet
+        settings: { slidesToShow: 2, arrows: true },
+      },
+      {
+        breakpoint: 480, // Mobile
+        settings: { slidesToShow: 2, arrows: false, dots: true }, // Mobile-la arrow-ku bathil dots
       },
     ],
   });
@@ -356,8 +366,8 @@ const TrailerHome = () => {
         <h3 className="text-xl font-bold text-white mb-6 uppercase tracking-widest border-l-4 rounded-sm border-orange-400 pl-3">
           {title}
         </h3>
-        <div className="px-0 hidden md:hidden lg:block md:px-4 slick-left-align">
-          <Slider {...sectionSettings} className="">
+        <div className="px-0  md:px-4 slick-left-align">
+          <Slider {...sectionSettings} key={viewportWidth} className="">
             {filtered.map((item) => {
               const videoId = getYouTubeID(item.videoUrl);
               const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
@@ -366,9 +376,8 @@ const TrailerHome = () => {
                 <div key={item.id} className="px-3">
                   <div className="bg-[#111] rounded-xl overflow-hidden border border-gray-800 hover:border-red-600/50 transition-all group">
                     <div className="relative aspect-video bg-black overflow-hidden">
-                      {selectedVideoId === item.id ? (
+                      {activeVideoId === item.id ? (
                         <VideoPlayer
-                          key={item.id}
                           videoOptions={{
                             autoplay: true,
                             controls: true,
@@ -382,81 +391,24 @@ const TrailerHome = () => {
                               },
                             ],
                           }}
-                          onVideoEnd={() => setSelectedVideoId(null)}
+                          onVideoEnd={() => setActiveVideoId(null)}
                         />
                       ) : (
                         <div
-                          className="relative w-full h-full cursor-pointer"
-                          onClick={() => setSelectedVideoId(item.id)}
+                          onClick={() => setActiveVideoId(item.id)}
+                          className="w-full h-full flex items-center justify-center cursor-pointer bg-black"
                         >
                           <img
                             src={thumbnail}
                             className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all"
                           />
+                          {/* ❌ custom thumbnail illa */}
+                          {/* YouTube-ku default poster show aagum only after iframe load */}
                           <div className="absolute inset-0 flex items-center justify-center">
                             <div className="bg-red-600 p-3 rounded-full shadow-xl">
                               <FaPlay className="text-white" />
                             </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                    {/* Content Area */}
-                    {/* <div className="p-4">
-                      <h4 className="font-bold text-sm line-clamp-1 text-white group-hover:text-red-500 transition-colors">
-                        {item.title}
-                      </h4>
-                      <div className="flex items-center justify-between mt-3 text-[10px] text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <FaEye /> {item.views}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <FaRegClock /> {item.postedTime}
-                        </span>
-                      </div>
-                    </div> */}
-                  </div>
-                </div>
-              );
-            })}
-          </Slider>
-        </div>
-        <div className="px-0 md:block lg:hidden md:px-4 slick-left-align">
-          <Slider {...sectionSettings} slidesToShow={2} className="">
-            {filtered.map((item) => {
-              const videoId = getYouTubeID(item.videoUrl);
-              const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-
-              return (
-                <div key={item.id} className="px-3">
-                  <div className="bg-[#111] rounded-xl overflow-hidden border border-gray-800 hover:border-red-600/50 transition-all group">
-                    <div className="relative aspect-video bg-black overflow-hidden">
-                      {selectedVideoId === item.id ? (
-                        <iframe
-                          className="w-full h-full"
-                          src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                          title={item.title}
-                          allowFullScreen
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        ></iframe>
-                      ) : (
-                        <div
-                          className="relative w-full h-full cursor-pointer"
-                          onClick={() => setSelectedVideoId(item.id)}
-                        >
-                          <img
-                            src={thumbnail}
-                            alt={item.movieName}
-                            className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
-                          />
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="bg-red-600 p-3 rounded-full shadow-xl transform group-hover:scale-110 transition-transform">
-                              <FaPlay className="text-white" />
-                            </div>
-                          </div>
-                          <span className="absolute bottom-2 right-2 bg-black/80 text-[10px] px-1.5 py-0.5 rounded font-bold">
-                            {item.duration}
-                          </span>
                         </div>
                       )}
                     </div>
