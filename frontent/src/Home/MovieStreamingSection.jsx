@@ -300,7 +300,7 @@ const MovieStreamingSection = () => {
       </div>
 
       {/* Optional Custom Scrollbar Styling (Add to your global CSS or index.css) */}
-      <style jsx>{`
+      <style jsx="true">{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 4px;
         }

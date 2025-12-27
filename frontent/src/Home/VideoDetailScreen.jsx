@@ -51,21 +51,20 @@ const videoPlaylist = [
     id: 5,
     movieName: "Thanal (2025)",
     title: "Test (2025)",
-    description:
-      "Thanal (2025) is a Tamil action-thriller about a former army man (Ashwin Kakumanu) seeking revenge against police officers involved in a past incident, clashing with a duty-bound new constable (Atharvaa Murali) caught in the escalating conflict, exploring themes of vengeance, duty, and moral choices over one intense, fateful night",
+    description: " ",
     src: "/video/thanal.mp4",
     thumbnail: "/thumbnail/thanal.jpg",
     date: "SEP 12, 2025",
   },
 ];
 
-export default function VideoDetailScreen() {
+export default function VideoDetailScreen({ activeVideos }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isWatchingFull, setIsWatchingFull] = useState(false);
   const videoRef = useRef(null);
   const fullVideoRef = useRef(null);
   const sliderRef = useRef(null);
-  const currentVideo = videoPlaylist[currentIndex];
+  const currentVideo = activeVideos[currentIndex];
 
   // Auto-play preview video when index changes
   useEffect(() => {
@@ -76,7 +75,7 @@ export default function VideoDetailScreen() {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(currentIndex);
     }
-  }, [currentIndex, isWatchingFull]);
+  }, [currentIndex, isWatchingFull, currentVideo, activeVideos.length]);
 
   // Handle Watch Now Action
   const handleWatchNow = () => {
@@ -107,6 +106,15 @@ export default function VideoDetailScreen() {
     ],
   };
 
+  // ஒருவேளை டேட்டா இன்னும் வரவில்லை என்றால்
+  if (!activeVideos || activeVideos.length === 0) {
+    return (
+      <div className="h-screen bg-[#0a0d14] flex items-center justify-center text-white">
+        No active banners found.
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#0a0d14] text-white overflow-hidden mt-20 md:mt-0 ">
       {/* FULL VIDEO PLAYER OVERLAY */}
@@ -120,7 +128,7 @@ export default function VideoDetailScreen() {
           </button>
           <video
             ref={fullVideoRef}
-            src={currentVideo.src}
+            src={currentVideo?.videoUrl}
             className="w-full h-full object-contain"
             controls
             autoPlay
@@ -134,7 +142,7 @@ export default function VideoDetailScreen() {
           {/* Preview Video */}
           <video
             ref={videoRef}
-            src={currentVideo.src}
+            src={currentVideo?.videoUrl}
             className="w-full h-full object-cover"
             muted
             playsInline
@@ -146,7 +154,7 @@ export default function VideoDetailScreen() {
           <button
             onClick={() =>
               setCurrentIndex((prev) =>
-                prev > 0 ? prev - 1 : videoPlaylist.length - 1
+                prev > 0 ? prev - 1 : activeVideos.length - 1
               )
             }
             className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 p-3 rounded-full hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -156,7 +164,7 @@ export default function VideoDetailScreen() {
 
           <button
             onClick={() =>
-              setCurrentIndex((prev) => (prev + 1) % videoPlaylist.length)
+              setCurrentIndex((prev) => (prev + 1) % activeVideos.length)
             }
             className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-black/40 p-3 rounded-full hover:bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"
           >
@@ -166,11 +174,11 @@ export default function VideoDetailScreen() {
           {/* Title and Action Button */}
           <div className="absolute bottom-10 left-10 hidden md:block z-20">
             <h2 className="text-4xl font-bold drop-shadow-2xl text-white tracking-tighter mb-4">
-              {currentVideo.movieName.split("|")[0]}
+              {currentVideo?.title}
             </h2>
 
             {/* Conditional Rendering for Watch Now Button */}
-            {currentVideo.src ? (
+            {currentVideo?.videoUrl ? (
               <button
                 onClick={handleWatchNow}
                 className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-10 rounded-md transition transform hover:scale-105 shadow-lg flex items-center gap-2"
@@ -186,7 +194,7 @@ export default function VideoDetailScreen() {
         {/* BOTTOM: THUMBNAIL CAROUSEL */}
         <div className="h-36 bg-[#0f121a] p-4 border-t border-gray-800">
           <Slider ref={sliderRef} {...settings}>
-            {videoPlaylist.map((item, index) => (
+            {activeVideos.map((item, index) => (
               <div key={item.id} className="px-2 outline-none">
                 <div
                   onClick={() => setCurrentIndex(index)}
@@ -197,8 +205,8 @@ export default function VideoDetailScreen() {
                   }`}
                 >
                   <img
-                    src={item.thumbnail}
-                    alt=""
+                    src={item.bannerImage}
+                    alt={item.title}
                     className="w-full h-full object-cover"
                   />
                 </div>
