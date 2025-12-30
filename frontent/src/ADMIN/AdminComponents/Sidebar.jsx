@@ -114,9 +114,9 @@ const Sidebar = () => {
               Home Contents
             </NavLink>
           </li>
-          {/* <li>
+          <li>
             <NavLink
-              to="aboutContent"
+              to="stream"
               className={({ isActive }) =>
                 `flex items-center p-3 rounded-lg transition duration-200 
                ${
@@ -127,9 +127,9 @@ const Sidebar = () => {
               }
             >
               <HiNewspaper className="mr-3" />
-              About Contents
+              StreamingNow
             </NavLink>
-          </li> */}
+          </li>
           {/* <li>
             <NavLink
               to="serviceContent"

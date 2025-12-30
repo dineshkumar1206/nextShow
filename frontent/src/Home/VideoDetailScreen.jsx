@@ -58,7 +58,7 @@ const videoPlaylist = [
   },
 ];
 
-export default function VideoDetailScreen({ activeVideos }) {
+export default function VideoDetailScreen({ activeVideos, activeBlogs }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isWatchingFull, setIsWatchingFull] = useState(false);
   const videoRef = useRef(null);
@@ -220,12 +220,12 @@ export default function VideoDetailScreen({ activeVideos }) {
       <div className="w-full md:w-[30%] bg-[#0d1017] flex flex-col border-l mt-20 border-gray-800">
         <div className="p-5 border-b border-gray-800">
           <h3 className="text-gray-400 uppercase text-xs font-bold tracking-[0.2em]">
-            Latest Movie News
+            Blogs
           </h3>
         </div>
 
         <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-8">
-          {videoPlaylist.map((movie) => (
+          {activeBlogs.map((movie) => (
             <div
               key={movie.id}
               className="flex gap-4 group transition-all duration-300 border-b border-white/5 pb-4 last:border-0 cursor-pointer"
@@ -235,20 +235,21 @@ export default function VideoDetailScreen({ activeVideos }) {
                   {movie.title}
                 </h4>
                 <p className="text-gray-500 text-[11px] line-clamp-2 leading-relaxed font-light">
-                  {movie.description}
+                  {movie.shortDescription}
                 </p>
               </div>
 
               <div className="flex flex-col items-center shrink-0">
                 <div className="w-20 h-14 rounded overflow-hidden shadow-lg grayscale group-hover:grayscale-0 transition-all duration-500">
                   <img
-                    src={movie.thumbnail}
+                    src={movie.bannerImage}
                     alt=""
                     className="w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform"
                   />
                 </div>
                 <div className="mt-2 bg-[#1a1e26] px-2 py-1 rounded text-[9px] text-gray-500 font-bold uppercase whitespace-nowrap group-hover:text-white transition-colors">
-                  {movie.date.split(",")[0]}
+                  {/* {movie.date.split(",")[0]} */}
+                  {movie.newsDate}
                 </div>
               </div>
             </div>

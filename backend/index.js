@@ -4,7 +4,12 @@ const cookieParser = require("cookie-parser");
 const sequelize = require("./config/db");
 require("dotenv").config();
 const adminAuthRoutes = require("./routes/AdminAuthRoutes/AdminRoutes");
-const VideoSectionRoutes = require("./routes/VideoRoutes/videoRoutes");
+const VideoSectionRoutes = require("./routes/HomePageRoutes/videoRoutes");
+const BlogSectionRoutes = require("./routes/HomePageRoutes/blogRoutes");
+const StreamingVideoRoutes = require("./routes/StreamingNow/StreamVideoRoutes");
+const HomeStreamRoutes = require("./routes/HomePageRoutes/HomeStreamRoute");
+const HomeMoviesRoutes = require("./routes/HomePageRoutes/HomeMovieRoute");
+const HomeTrailersRoutes = require("./routes/HomePageRoutes/HomeTrailersRoute");
 
 const app = express();
 
@@ -36,6 +41,11 @@ app.use(express.urlencoded({ extended: true, limit: "100mb" }));
 
 app.use("/api/auth", adminAuthRoutes);
 app.use("/api/home", VideoSectionRoutes);
+app.use("/api/home", BlogSectionRoutes);
+app.use("/api/home", HomeStreamRoutes);
+app.use("/api/stream", StreamingVideoRoutes);
+app.use("/api/home", HomeMoviesRoutes);
+app.use("/api/home", HomeTrailersRoutes);
 
 // Simple root route for testing
 app.get("/", (req, res) => {

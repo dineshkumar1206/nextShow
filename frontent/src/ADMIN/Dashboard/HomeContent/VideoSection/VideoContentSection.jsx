@@ -52,7 +52,7 @@ const VideoContentSection = () => {
   };
 
   return (
-    <div className="p-4 md:p-6 bg-gray-50 min-h-screen">
+    <div className="p-4 md:p-6 bg-gray-50 ">
       {/* Header Section */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
         <div>
@@ -95,7 +95,7 @@ const VideoContentSection = () => {
               <thead>
                 <tr className="bg-gray-50/50 border-b border-gray-100">
                   <th className="px-4 py-4 text-xs uppercase font-bold text-gray-400 w-16">
-                    #
+                    order
                   </th>
                   <th className="px-4 py-4 text-xs uppercase font-bold text-gray-400 w-1/4">
                     Banner

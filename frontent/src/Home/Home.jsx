@@ -13,16 +13,20 @@ import Nprogress from "nprogress";
 import { fetchActiveVideos } from "../redux/HomeContentSlice/VideoSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { FaSpinner } from "react-icons/fa6";
+import { fetchActiveBlogs } from "../redux/HomeContentSlice/blogSlice";
+import { fetchActiveHomeStream } from "../redux/HomeContentSlice/HomeStreamSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
   const [isPageLoading, setIsPageLoading] = useState(false);
 
   const { activeVideos } = useSelector((state) => state.videoSection);
+  const { activeBlogs } = useSelector((state) => state.blogSection);
+  const { activeItems } = useSelector((state) => state.homeStreaming);
 
-  console.log(activeVideos);
+  console.log(activeItems);
 
-  const hasData = activeVideos.length > 0;
+  const hasData = activeVideos.length > 0 && activeBlogs.length > 0;
 
   useEffect(() => {
     const fetchAllHomeData = async () => {
@@ -35,7 +39,11 @@ const Home = () => {
         setIsPageLoading(true);
         Nprogress.start();
 
-        await Promise.all([dispatch(fetchActiveVideos()).then(unwrapResult)]);
+        await Promise.all([
+          dispatch(fetchActiveVideos()).then(unwrapResult),
+          dispatch(fetchActiveBlogs()).then(unwrapResult),
+          dispatch(fetchActiveHomeStream()).then(unwrapResult),
+        ]);
       } catch (error) {
         console.error("Home Page Parallel Fetch Error:", error);
       } finally {
@@ -61,10 +69,13 @@ const Home = () => {
 
   return (
     <div className="pb-20">
-      <VideoDetailScreen activeVideos={activeVideos} />
+      <VideoDetailScreen
+        activeVideos={activeVideos}
+        activeBlogs={activeBlogs}
+      />
       {/* <UpcomingMoviesCarousel />
       <NewReleaseMoviesCarousel /> */}
-      <MovieStreamingSection />
+      <MovieStreamingSection activeItems={activeItems} />
       <MoviesSection />
       <TrailerSection />
       {/* <YoutubeVideoReviews /> */}

@@ -13,6 +13,7 @@ import NProgress from "nprogress"; // Import NProgress
 import "nprogress/nprogress.css"; // Import CSS
 import Login from "./ADMIN/Login";
 import AdminProtect from "./ADMIN/AdminComponents/AdminProtect";
+import StreamingContent from "./ADMIN/Dashboard/StreamingNow/StreamingContent";
 // import "swiper/css";
 // import "swiper/css/navigation";
 // import "swiper/css/pagination";
@@ -54,6 +55,7 @@ const App = () => {
           <Route path="" element={<Dashboard />}>
             <Route index element={<Navigate to="home" replace />} />
             <Route path="home" element={<DashboardHome />} />
+            <Route path="stream" element={<StreamingContent />} />
           </Route>
         </Route>
       </Routes>

@@ -224,13 +224,13 @@ const MovieSection = () => {
           <h3 className="text-white font-bold mb-4 uppercase rounded-sm text-xs tracking-[0.2em] border-l-4 border-orange-400 pl-3">
             Upcoming
           </h3>
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          {/* <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {upcomingMovies.map((movie) => (
               <div
                 key={movie.id}
                 className="relative group rounded-xl overflow-hidden border border-gray-800 bg-[#1a1a1a]"
               >
-                {/* Bigger Image Container */}
+               
                 <div className="h-72 w-full overflow-hidden">
                   <img
                     src={movie.img}
@@ -241,7 +241,7 @@ const MovieSection = () => {
                     JAN 1, 2026
                   </div>
                 </div>
-                {/* Details below image */}
+              
                 <div className="p-4 bg-gradient-to-b from-[#1a1a1a] to-black">
                   <h4 className="text-white text-lg font-black mb-2 uppercase">
                     {movie.movie}
@@ -259,6 +259,17 @@ const MovieSection = () => {
                 </div>
               </div>
             ))}
+          </div> */}
+          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+            {upcomingMovies.length > 0 ? (
+              upcomingMovies.map((movie) => (
+                <MovieReviewCard key={movie.id} review={movie} />
+              ))
+            ) : (
+              <p className="text-gray-600 italic text-sm">
+                No new releases found.
+              </p>
+            )}
           </div>
         </div>
 
