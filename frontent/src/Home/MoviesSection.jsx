@@ -202,12 +202,12 @@ export const MOVIE_REVIEWS_DATA = [
   },
 ];
 
-const MovieSection = () => {
-  const upcomingMovies = MOVIE_REVIEWS_DATA.filter(
-    (m) => m.streamType === "UPCOMMING"
+const MovieSection = ({ activeHomeMovies }) => {
+  const upcomingMovies = activeHomeMovies.filter(
+    (m) => m.streamType === "UPCOMING"
   );
-  const newReleases = MOVIE_REVIEWS_DATA.filter((m) => m.streamType === "NEW");
-  const trendingNow = MOVIE_REVIEWS_DATA.filter(
+  const newReleases = activeHomeMovies.filter((m) => m.streamType === "NEW");
+  const trendingNow = activeHomeMovies.filter(
     (m) => m.streamType === "TRENDING"
   );
 
@@ -260,15 +260,13 @@ const MovieSection = () => {
               </div>
             ))}
           </div> */}
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {upcomingMovies.length > 0 ? (
               upcomingMovies.map((movie) => (
                 <MovieReviewCard key={movie.id} review={movie} />
               ))
             ) : (
-              <p className="text-gray-600 italic text-sm">
-                No new releases found.
-              </p>
+              <p className="text-gray-600 italic text-sm">No Upcoming found.</p>
             )}
           </div>
         </div>
@@ -278,7 +276,7 @@ const MovieSection = () => {
           <h3 className="text-white font-bold mb-4 rounded-sm uppercase text-xs tracking-[0.2em] border-l-4 border-orange-400 pl-3">
             New Releases
           </h3>
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {newReleases.length > 0 ? (
               newReleases.map((movie) => (
                 <MovieReviewCard key={movie.id} review={movie} />
@@ -296,7 +294,7 @@ const MovieSection = () => {
           <h3 className="text-white font-bold mb-4 rounded-sm uppercase text-xs tracking-[0.2em] border-l-4 border-orange-400 pl-3">
             Trending Now
           </h3>
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {trendingNow.length > 0 ? (
               trendingNow.map((movie) => (
                 <MovieReviewCard key={movie.id} review={movie} />

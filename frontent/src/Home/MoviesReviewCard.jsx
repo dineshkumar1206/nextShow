@@ -6,8 +6,8 @@ const MovieReviewCard = ({ review }) => {
       {/* 1. Small Square Movie Image */}
       <div className="relative w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden">
         <img
-          src={review.img}
-          alt={review.movie}
+          src={review.bannerImage}
+          alt={review.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         {/* Trending Badge Overlay */}
@@ -20,33 +20,35 @@ const MovieReviewCard = ({ review }) => {
 
       {/* 2. Movie Details Section */}
       <div className="flex-1 min-w-0 pr-1">
-        <h3 className="text-white text-base font-black truncate leading-tight mb-1">
-          {review.movie}
+        <h3 className="text-white text-base font-black truncate leading-tight pb-2 mb-1">
+          {review.title}
         </h3>
 
-        <div className="text-[11px] space-y-0.5">
+        <div className="text-[11px] space-y-1">
           <div className="flex">
-            <span className="text-gray-500 font-bold w-14">Director :</span>
+            {/* <span className="text-gray-500 font-bold w-14">Director :</span> */}
             <span className="text-gray-400 font-medium truncate">
-              {review.director}
+              Director : {review.director}
             </span>
           </div>
 
           <div className="flex">
-            <span className="text-gray-500 font-bold w-14">Cast :</span>
+            {/* <span className="text-gray-500 font-bold w-14">Cast :</span> */}
             <span
               className="text-gray-400 font-medium truncate"
               title={review.cast}
             >
-              {review.cast}
+              Cast : {review.cast}
             </span>
           </div>
 
           {/* Optional: Show Release Date only if available */}
-          {review.year && (
+          {review.releaseDate && (
             <div className="flex">
-              <span className="text-gray-500 font-bold w-14">Released :</span>
-              <span className="text-gray-400 font-medium">{review.year}</span>
+              {/* <span className="text-gray-500 font-bold w-14">Released :</span> */}
+              <span className="text-gray-400 font-medium">
+                Released : {review.releaseDate}
+              </span>
             </div>
           )}
         </div>

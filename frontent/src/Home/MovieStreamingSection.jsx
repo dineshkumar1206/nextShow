@@ -256,7 +256,7 @@ const MovieStreamingSection = ({ activeItems }) => {
               </div>
             ))}
           </div> */}
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {upcomingMovies.length > 0 ? (
               upcomingMovies.map((movie) => (
                 <StreamingReviewCard key={movie.id} review={movie} />
@@ -274,7 +274,7 @@ const MovieStreamingSection = ({ activeItems }) => {
           <h3 className="text-white font-bold mb-4 uppercase text-xs rounded-sm tracking-[0.2em] border-l-4 border-orange-400 pl-3">
             New Releases
           </h3>
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {newReleases.length > 0 ? (
               newReleases.map((movie) => (
                 <StreamingReviewCard key={movie.id} review={movie} />
@@ -292,7 +292,7 @@ const MovieStreamingSection = ({ activeItems }) => {
           <h3 className="text-white font-bold mb-4 uppercase rounded-sm text-xs tracking-[0.2em] border-l-4 border-orange-400 pl-3">
             Trending Now
           </h3>
-          <div className="space-y-4 h-[520px] overflow-y-auto pr-2 custom-scrollbar">
+          <div className="space-y-4 max-h-[520px] overflow-y-auto pr-2 custom-scrollbar">
             {trendingNow.length > 0 ? (
               trendingNow.map((movie) => (
                 <StreamingReviewCard key={movie.id} review={movie} />

@@ -20,11 +20,11 @@ const StreamingReviewCard = ({ review }) => {
 
       {/* 2. Movie Details Section */}
       <div className="flex-1 min-w-0 pr-1">
-        <h3 className="text-white text-base font-black truncate leading-tight mb-1">
+        <h3 className="text-white text-base font-black truncate leading-tight pb-2 mb-1">
           {review.title}
         </h3>
 
-        <div className="text-[11px] space-y-0.5">
+        <div className="text-[11px] space-y-1">
           <div className="flex">
             {/* <span className="text-gray-500 font-bold w-14">Director :</span> */}
             <span className="text-gray-400 font-medium truncate">

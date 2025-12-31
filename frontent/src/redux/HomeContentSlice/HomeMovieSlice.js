@@ -108,7 +108,7 @@ const homeMovieSlice = createSlice({
     message: "",
 
     // Frontend States
-    activeItems: [],
+    activeHomeMovies: [],
     isActiveLoading: false,
     isActiveSuccess: false,
     isActiveError: false,
@@ -136,7 +136,7 @@ const homeMovieSlice = createSlice({
       .addCase(fetchActiveHomeMovies.fulfilled, (state, action) => {
         state.isActiveLoading = false;
         state.isActiveSuccess = true;
-        state.activeItems = action.payload;
+        state.activeHomeMovies = action.payload;
       })
       .addCase(fetchActiveHomeMovies.rejected, (state, action) => {
         state.isActiveLoading = false;

@@ -108,7 +108,7 @@ const homeTrailerSlice = createSlice({
     message: "",
 
     // Frontend States
-    activeItems: [],
+    activeHomeTrailers: [],
     isActiveLoading: false,
     isActiveSuccess: false,
     isActiveError: false,
@@ -136,7 +136,7 @@ const homeTrailerSlice = createSlice({
       .addCase(fetchActiveHomeTrailers.fulfilled, (state, action) => {
         state.isActiveLoading = false;
         state.isActiveSuccess = true;
-        state.activeItems = action.payload;
+        state.activeHomeTrailers = action.payload;
       })
       .addCase(fetchActiveHomeTrailers.rejected, (state, action) => {
         state.isActiveLoading = false;
