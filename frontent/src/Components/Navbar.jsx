@@ -10,6 +10,7 @@ const navLinks = [
   { to: "/trailer", label: "Trailers" },
   { to: "/news", label: "News" },
   { to: "/about", label: "About Us" },
+  { to: "/auth/login", label: "Login" },
 ];
 
 const menuVariants = {
