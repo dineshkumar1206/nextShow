@@ -16,7 +16,7 @@ const StreamingNow = () => {
   const { activeItems } = useSelector((state) => state.streamingNow);
   const { streamingData } = useSelector((state) => state.centralizedMovies);
 
-  console.log(activeItems);
+  console.log(streamingData);
 
   const hasData =
     activeItems.length > 0 ||

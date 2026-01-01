@@ -28,7 +28,7 @@ exports.getNewMoviesPageData = async (req, res) => {
       CentralizedMovieCreate.findAll({
         where: {
           showInNewMovies: true,
-          streamType: "RELEASED",
+          streamType: "NEW_RELEASE",
           isActive: true,
         },
         order: [["order", "ASC"]],
@@ -68,7 +68,7 @@ exports.getStreamingNowPageData = async (req, res) => {
       CentralizedMovieCreate.findAll({
         where: {
           showInStreamingNow: true,
-          streamType: "RELEASED",
+          streamType: "NEW_RELEASE",
           isActive: true,
         },
         order: [["order", "ASC"]],

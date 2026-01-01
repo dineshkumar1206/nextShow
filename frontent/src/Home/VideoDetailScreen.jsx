@@ -107,13 +107,13 @@ export default function VideoDetailScreen({ activeVideos, activeBlogs }) {
   };
 
   // ஒருவேளை டேட்டா இன்னும் வரவில்லை என்றால்
-  if (!activeVideos || activeVideos.length === 0) {
-    return (
-      <div className="h-screen bg-[#0a0d14] flex items-center justify-center text-white">
-        No active banners found.
-      </div>
-    );
-  }
+  // if (!activeVideos || activeVideos.length === 0) {
+  //   return (
+  //     <div className="h-screen bg-[#0a0d14] flex items-center justify-center text-white">
+  //       No active banners found.
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#0a0d14] text-white overflow-hidden mt-20 md:mt-0 ">
