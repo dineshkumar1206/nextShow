@@ -139,7 +139,7 @@ export default function VideoDetailScreen({ activeVideos, activeBlogs }) {
       )}
 
       {/* LEFT SIDE: MAIN PLAYER & CAROUSEL */}
-      <div className="w-full md:w-[70%]  flex flex-col relative border-r border-gray-800">
+      <div className="w-full md:w-[65%]  flex flex-col relative border-r border-gray-800">
         <div className="relative flex-1 bg-black group overflow-hidden">
           {/* Preview Video */}
           <video
@@ -219,7 +219,7 @@ export default function VideoDetailScreen({ activeVideos, activeBlogs }) {
       </div>
 
       {/* RIGHT SIDE: NEWS LIST */}
-      <div className="w-full md:w-[30%] bg-[#0d1017] flex flex-col border-l mt-20 border-gray-800">
+      <div className="w-full md:w-[35%] bg-[#0d1017] flex flex-col border-l mt-20 border-gray-800">
         <div className="p-5 border-b border-gray-800 flex justify-between items-center">
           <h3 className="text-gray-400 uppercase text-xs font-bold tracking-[0.2em]">
             News
@@ -233,7 +233,7 @@ export default function VideoDetailScreen({ activeVideos, activeBlogs }) {
           </Link>
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar p-5 space-y-8">
+        <div className="flex-1 overflow-y-auto no-scrollbar  p-5 space-y-8">
           {activeBlogs.map((movie) => (
             <div
               key={movie.id}

@@ -212,7 +212,7 @@ const MovieSection = ({ activeHomeMovies }) => {
   );
 
   return (
-    <div className="bg-[#0f0f0f] py-10 px-4 md:px-8 border-t border-gray-800">
+    <div className="bg-[#0f0f0f] py-2 px-4 md:px-8 ">
       <h2 className="text-white text-xl md:text-2xl font-black mb-6 uppercase tracking-wider">
         Movies
       </h2>
