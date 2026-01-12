@@ -1,28 +1,62 @@
 import React from "react";
 import { Plus, ChevronRight, Settings, Eye, ExternalLink } from "lucide-react";
 
-const MovieDescriptionSection = () => {
-  const genres = [
-    "Tamil",
-    "Coming-of-Age",
-    "Workplace Drama",
-    "Comedy",
-    "Drama",
-    "Sport",
-  ];
+const MovieDescriptionSection = ({ movie }) => {
+  // const genres = [
+  //   "Tamil",
+  //   "Coming-of-Age",
+  //   "Workplace Drama",
+  //   "Comedy",
+  //   "Drama",
+  //   "Sport",
+  // ];
+
+  const parseData = (data) => {
+    try {
+      return typeof data === "string" ? JSON.parse(data) : data;
+    } catch (error) {
+      return [];
+    }
+  };
+
+  const genres = parseData(movie?.genres);
+  const languages = parseData(movie?.language);
 
   return (
-    <div className="py-6 bg-[#121212] text-white">
-      {/* Genres Tags - Mobile-la scroll aagama flex-wrap panni neat-ah irukum */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {genres.map((tag) => (
-          <span
-            key={tag}
-            className="px-3 md:px-4 py-1 border border-gray-600 rounded-full text-xs md:text-sm font-medium hover:bg-gray-800 cursor-pointer transition-colors"
-          >
-            {tag}
-          </span>
-        ))}
+    <div className="py-6 bg-[#121212] space-y-4 mb-8 text-white">
+      {/* Genres & Languages Tags */}
+      {/* Language Section */}
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest min-w-[80px]">
+          Languages:
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {languages.map((lang) => (
+            <span
+              key={lang}
+              className="px-3 py-1 border border-yellow-600/50 text-yellow-500 rounded-md text-xs font-bold bg-yellow-600/10"
+            >
+              {lang}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Genre Section */}
+      <div className="flex items-center gap-3">
+        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest min-w-[80px]">
+          Genres:
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {genres.map((tag) => (
+            <span
+              key={tag}
+              className="px-3 py-1 border border-gray-700 text-gray-300 rounded-md text-xs md:text-sm hover:bg-gray-800 transition-colors cursor-pointer"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
       </div>
 
       {/* Main Container: Mobile-la flex-col, Desktop-la flex-row (gap-12) */}
@@ -30,9 +64,7 @@ const MovieDescriptionSection = () => {
         {/* Left Side: Info & Cast */}
         <div className="flex-1 order-1">
           <p className="text-base md:text-lg leading-relaxed text-gray-200 mb-6">
-            A rural man moves to Dubai pursuing dreams and work. After disaster
-            strikes, he returns home, discovering his village's worth and
-            fighting to fulfill his father's wishes despite challenges.
+            {movie.longDescription}
           </p>
 
           {/* Director, Writer, Stars List */}
@@ -42,7 +74,7 @@ const MovieDescriptionSection = () => {
                 Director
               </span>
               <span className="text-blue-400 hover:underline cursor-pointer ml-2 text-sm md:text-base">
-                Dhanush
+                {movie.director}
               </span>
             </div>
 
@@ -51,7 +83,7 @@ const MovieDescriptionSection = () => {
                 Writer
               </span>
               <span className="text-blue-400 hover:underline cursor-pointer ml-2 text-sm md:text-base">
-                Dhanush
+                {movie.writer || "N/A"}
               </span>
             </div>
 
@@ -59,21 +91,24 @@ const MovieDescriptionSection = () => {
               <span className="font-bold w-20 shrink-0 text-sm md:text-base">
                 Stars
               </span>
-              <div className="flex flex-wrap items-center ml-2">
-                {[
-                  { id: 1, name: "Dhanush" },
-                  { id: 2, name: "Arun Vijay" },
-                  { id: 3, name: "Sathyaraj" },
-                ].map((star, index, array) => (
-                  <React.Fragment key={star.id}>
-                    <span className="text-blue-400 hover:underline cursor-pointer text-sm md:text-base">
-                      {star.name}
-                    </span>
-                    {index < array.length - 1 && (
-                      <span className="text-white mx-2 font-bold">•</span>
-                    )}
-                  </React.Fragment>
-                ))}
+              <div className="flex-1 overflow-hidden items-center ml-2">
+                {/* line-clamp-2 nu potta 2 lines-ku mela pona truncate aagum */}
+                <div className="line-clamp-2 text-sm md:text-base">
+                  {movie.cast ? (
+                    movie.cast.split(",").map((star, index, array) => (
+                      <React.Fragment key={index}>
+                        <span className="text-blue-400 hover:underline cursor-pointer">
+                          {star.trim()}
+                        </span>
+                        {index < array.length - 1 && (
+                          <span className="text-white mx-2 font-bold">•</span>
+                        )}
+                      </React.Fragment>
+                    ))
+                  ) : (
+                    <span className="text-gray-500">N/A</span>
+                  )}
+                </div>
               </div>
               <div className="ml-auto">
                 <ChevronRight

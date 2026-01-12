@@ -57,9 +57,10 @@ const StreamingNow = () => {
   return (
     <div className="mt-16">
       {/* <StreamVideoSection activeItems={activeItems} /> */}
-      <StreamingUpcommingMovies upcoming={streamingData.upcoming} />
       <StreamingNewRelease newReleases={streamingData.newReleases} />
-      <StreamingTrailer upcoming={streamingData.upcoming} />
+      <StreamingUpcommingMovies upcoming={streamingData.upcoming} />
+
+      {/* <StreamingTrailer upcoming={streamingData.upcoming} /> */}
     </div>
   );
 };

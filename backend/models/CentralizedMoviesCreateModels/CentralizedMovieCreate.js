@@ -193,6 +193,29 @@ const CentralizedMovieCreate = sequelize.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+
+    /**
+     * 👥 Top Cast Section (Direct URL Method)
+     * Format: [
+     * { "name": "Dhanush", "role": "Murugan", "img": "https://image-link.com/dhanush.jpg" },
+     * { "name": "Arun Vijay", "role": "Ashwin", "img": "https://image-link.com/arun.jpg" }
+     * ]
+     */
+    topCast: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: [],
+    },
+    /**
+     * 📸 Photos/Videos Section
+     * Inga neenga YouTube URLs mattum store panna pothum.
+     * Format: ["https://youtu.be/abc", "https://youtu.be/def"]
+     */
+    mediaLinks: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: [],
+    },
   },
   {
     tableName: "centralized_movie_create",

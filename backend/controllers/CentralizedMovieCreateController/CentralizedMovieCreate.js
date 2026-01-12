@@ -131,8 +131,10 @@ exports.getStreamingNowPageData = async (req, res) => {
 
 // @desc    Get Full Movie Details by Slug
 exports.getMovieDetailsBySlug = async (req, res) => {
+  console.log("Function start");
   try {
     const { slug } = req.params;
+    console.log("Slug", slug);
 
     const movie = await CentralizedMovieCreate.findOne({
       where: {

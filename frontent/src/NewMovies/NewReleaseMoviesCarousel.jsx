@@ -2,6 +2,7 @@ import React from "react";
 import Slider from "react-slick";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import { FaAngleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 // ⭐ New Release Movies Data
 const NEW_RELEASE_MOVIES = [
@@ -59,7 +60,10 @@ const PrevArrow = ({ className, style, onClick }) => (
 
 // ⭐ Movie Card
 const MovieCard = ({ movie }) => (
-  <div className="p-2 cursor-pointer transition duration-300 hover:scale-[1.03] rounded-lg overflow-hidden">
+  <Link
+    to={`/movie/${movie.slug}`}
+    className="p-2 cursor-pointer block transition duration-300 hover:scale-[1.03] rounded-lg overflow-hidden"
+  >
     <div className="bg-[#1a1a1a] rounded-lg shadow-lg">
       <img
         src={movie.bannerImage}
@@ -73,7 +77,7 @@ const MovieCard = ({ movie }) => (
         </h3>
       </div>
     </div>
-  </div>
+  </Link>
 );
 
 // ⭐ MAIN COMPONENT

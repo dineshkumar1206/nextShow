@@ -4,7 +4,7 @@ import { FaPlay } from "react-icons/fa";
 import VideoPlayer from "../Components/VideoPlayer";
 import MovieDescriptionSection from "./MovieDescriptionSection";
 
-const MovieDetailsHeader = () => {
+const MovieDetailsHeader = ({ movie }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const trailerUrl = "https://youtu.be/zdu0YzzJ10o?si=tEbfZkJtD4F5ELlk";
 
@@ -15,7 +15,7 @@ const MovieDetailsHeader = () => {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  const videoId = getYouTubeID(trailerUrl);
+  const videoId = getYouTubeID(movie.trailerUrl);
   const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
   return (
@@ -24,12 +24,12 @@ const MovieDetailsHeader = () => {
       <div className="py-4 md:py-6 flex flex-col md:flex-row justify-between items-start gap-4">
         <div>
           <h1 className="text-3xl md:text-5xl font-semibold mb-2">
-            Idly Kadai
+            {movie.title}
           </h1>
           <div className="flex flex-wrap gap-3 text-gray-400 text-xs md:text-sm">
-            <span>Original title: Idli Kadai</span>
-            <span>2025</span>
-            <span>2h 28m</span>
+            <span>Original title: {movie.title}</span>
+            <span>{new Date(movie.createdAt).getFullYear()}</span>
+            <span>{movie.durationOrSeason}</span>
           </div>
         </div>
 
@@ -46,13 +46,15 @@ const MovieDetailsHeader = () => {
                 md={24}
               />
               <div className="text-left">
-                <span className="text-lg md:text-xl font-bold">6.5</span>
+                <span className="text-lg md:text-xl font-bold">
+                  {movie.imdbRating}
+                </span>
                 <span className="text-gray-400 text-xs md:text-sm">/10</span>
-                <p className="text-[10px] text-gray-500">6K</p>
+                {/* <p className="text-[10px] text-gray-500">6K</p> */}
               </div>
             </div>
           </div>
-          <div className="text-center">
+          {/* <div className="text-center">
             <span className="text-[10px] md:text-xs font-bold text-gray-400 block tracking-widest uppercase">
               YOUR RATING
             </span>
@@ -60,7 +62,7 @@ const MovieDetailsHeader = () => {
               <Star size={20} md={24} />
               <span className="text-sm md:text-base">Rate</span>
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -71,7 +73,7 @@ const MovieDetailsHeader = () => {
           {/* Poster */}
           <div className="col-span-4 md:col-span-12 relative group overflow-hidden rounded-lg cursor-pointer">
             <img
-              src="/movie/idly.jpg"
+              src={movie.bannerImage}
               alt="Poster"
               className="w-full h-full object-cover"
             />
@@ -104,7 +106,7 @@ const MovieDetailsHeader = () => {
                   responsive: true,
                   fluid: true,
                   techOrder: ["youtube"],
-                  sources: [{ src: trailerUrl, type: "video/youtube" }],
+                  sources: [{ src: movie.trailerUrl, type: "video/youtube" }],
                 }}
                 onVideoEnd={() => setIsPlaying(false)}
               />
@@ -153,7 +155,7 @@ const MovieDetailsHeader = () => {
 
       {/* 3. Description Section */}
       <div className="py-6">
-        <MovieDescriptionSection />
+        <MovieDescriptionSection movie={movie} />
       </div>
     </div>
   );
