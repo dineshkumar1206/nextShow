@@ -3,14 +3,14 @@ import { ChevronRight, Heart, Edit2 } from "lucide-react";
 
 const TopCast = () => {
   const castList = [
-    { name: "Dhanush", role: "Murugan", img: "/cast/dhanush.jpg" },
+    { name: "Dhanush", role: "Murugan", img: "/cast/d.jpg" },
     { name: "Arun Vijay", role: "Ashwin", img: "/cast/arun.jpg" },
-    { name: "Sathyaraj", role: "Vishnu Vardhan", img: "/cast/sathyaraj.jpg" },
-    { name: "Raj Kiran", role: "Sivanesan", img: "/cast/rajkiran.jpg" },
-    { name: "Nithya Menen", role: "Kayal", img: "/cast/nithya.jpg" },
+    { name: "Sathyaraj", role: "Vishnu Vardhan", img: "/cast/s.jpg" },
+    { name: "Raj Kiran", role: "Sivanesan", img: "/cast/r.jpg" },
+    { name: "Nithya Menen", role: "Kayal", img: "/cast/n.jpg" },
     { name: "Shalini Pandey", role: "Meera", img: "/cast/shalini.jpg" },
-    { name: "Ilavarasu", role: "Ramarajan", img: "/cast/ilavarasu.jpg" },
-    { name: "Geetha Kailasam", role: "Kasthuri", img: "/cast/geetha.jpg" },
+    { name: "Ilavarasu", role: "Ramarajan", img: "/cast/i.jpg" },
+    { name: "Geetha Kailasam", role: "Kasthuri", img: "/cast/g.jpg" },
   ];
 
   return (
@@ -18,20 +18,20 @@ const TopCast = () => {
       {/* Header Section */}
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-4 group cursor-pointer">
-          <div className="w-1 h-8 bg-yellow-500 rounded-full"></div>
+          {/* <div className="w-1 h-8 bg-yellow-500 rounded-full"></div> */}
           <h2 className="text-2xl md:text-3xl font-bold flex items-center">
             Top Cast{" "}
-            <span className="text-gray-500 ml-3 font-normal text-xl">17</span>
+            {/* <span className="text-gray-500 ml-3 font-normal text-xl">17</span> */}
             <ChevronRight
               className="ml-2 group-hover:text-yellow-500 transition-colors"
               size={28}
             />
           </h2>
         </div>
-        <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+        {/* <button className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
           <Edit2 size={18} />
           <span className="text-sm font-semibold">Edit</span>
-        </button>
+        </button> */}
       </div>
 
       {/* Cast Grid - Responsive 1 column on mobile, 2 on desktop */}

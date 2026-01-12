@@ -25,7 +25,7 @@ const MovieGallery = () => {
         <div className="flex items-center gap-4 group cursor-pointer">
           <h2 className="text-2xl md:text-3xl font-bold flex items-center">
             Photos{" "}
-            <span className="text-gray-500 ml-3 font-normal text-xl">31</span>
+            {/* <span className="text-gray-500 ml-3 font-normal text-xl">31</span> */}
             <ChevronRight
               className="ml-2 group-hover:text-yellow-500 transition-colors"
               size={28}
