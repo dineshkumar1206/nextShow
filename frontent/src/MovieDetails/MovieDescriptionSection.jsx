@@ -11,10 +11,28 @@ const MovieDescriptionSection = ({ movie }) => {
   //   "Sport",
   // ];
 
+  // const parseData = (data) => {
+  //   try {
+  //     return typeof data === "string" ? JSON.parse(data) : data;
+  //   } catch (error) {
+  //     return [];
+  //   }
+  // };
+
   const parseData = (data) => {
     try {
-      return typeof data === "string" ? JSON.parse(data) : data;
+      let result = data;
+      // Data string-aaga irukkum varai parse pannu (Handling "\"[[...]]\"")
+      while (typeof result === "string") {
+        result = JSON.parse(result);
+      }
+
+      return Array.isArray(result) ? result : [];
     } catch (error) {
+      // Oru velai plain string-aa irundha (Ex: "Tamil"), adhayae array-vaa maathuvom
+      if (typeof data === "string" && data.trim() !== "") {
+        return [data];
+      }
       return [];
     }
   };

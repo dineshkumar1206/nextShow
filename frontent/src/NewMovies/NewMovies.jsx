@@ -21,7 +21,7 @@ const NewMovies = () => {
     (state) => state.centralizedMovies
   );
 
-  // console.log(newMoviesData);
+  console.log(newMoviesData);
   // Data irukkannu check pannikirom (to avoid re-fetching)
   const hasData =
     newMoviesData.upcoming?.length > 0 || newMoviesData.newReleases?.length > 0;
