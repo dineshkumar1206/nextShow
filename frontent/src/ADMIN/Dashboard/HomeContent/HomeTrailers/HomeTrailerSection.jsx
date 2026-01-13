@@ -58,7 +58,7 @@ const HomeTrailerSection = () => {
             <span className="p-2 bg-orange-100 text-orange-600 rounded-lg">
               <FaTv size={20} />
             </span>
-            Trailers Management
+            Trending Management
           </h2>
           <p className="text-sm text-gray-500 mt-1">
             Manage featured content for the home screen

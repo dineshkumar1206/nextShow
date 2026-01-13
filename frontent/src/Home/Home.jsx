@@ -86,8 +86,9 @@ const Home = () => {
       />
       {/* <UpcomingMoviesCarousel />
       <NewReleaseMoviesCarousel /> */}
-      <MovieStreamingSection activeItems={activeItems} />
       <MoviesSection activeHomeMovies={activeHomeMovies} />
+      <MovieStreamingSection activeItems={activeItems} />
+
       <TrailerSection activeHomeTrailers={activeHomeTrailers} />
 
       {/* <YoutubeVideoReviews /> */}
