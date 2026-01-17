@@ -7,6 +7,13 @@ const CentralizedMovieCreate = require("../../models/CentralizedMoviesCreateMode
 
 const parseBool = (value) => value === "true" || value === true;
 
+const getYouTubeID = (url) => {
+  const regExp =
+    /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
 /**
  * ==========================================
  * 1. PUBLIC READ CONTROLLERS
@@ -14,31 +21,74 @@ const parseBool = (value) => value === "true" || value === true;
  */
 
 // Oru common helper function to parse movie data
+// --------option-1--------
+// const parseMovieFields = (movie) => {
+//   const data = movie.get({ plain: true }); // Sequelize object-ah plain JSON-ah mathuthu
+
+//   try {
+//     // Data string-ah iruntha mattum parse pannu, illana empty array kudu
+//     data.language = data.language
+//       ? typeof data.language === "string"
+//         ? JSON.parse(data.language)
+//         : data.language
+//       : [];
+//     data.genres = data.genres
+//       ? typeof data.genres === "string"
+//         ? JSON.parse(data.genres)
+//         : data.genres
+//       : [];
+
+//     // Oru vela parse pannathuku apparamum munnadi mari double-string-ah iruntha (re-parsing)
+//     if (typeof data.language === "string")
+//       data.language = JSON.parse(data.language);
+//     if (typeof data.genres === "string") data.genres = JSON.parse(data.genres);
+//   } catch (e) {
+//     console.log("Parse Error for movie:", data.title, e);
+//     data.language = [];
+//     data.genres = [];
+//   }
+
+//   return data;
+// };
+
+// Oru common helper function to parse movie data
+// ----------option-2------------
+
 const parseMovieFields = (movie) => {
-  const data = movie.get({ plain: true }); // Sequelize object-ah plain JSON-ah mathuthu
+  const data = movie.get({ plain: true });
 
-  try {
-    // Data string-ah iruntha mattum parse pannu, illana empty array kudu
-    data.language = data.language
-      ? typeof data.language === "string"
-        ? JSON.parse(data.language)
-        : data.language
-      : [];
-    data.genres = data.genres
-      ? typeof data.genres === "string"
-        ? JSON.parse(data.genres)
-        : data.genres
-      : [];
+  console.log(data);
 
-    // Oru vela parse pannathuku apparamum munnadi mari double-string-ah iruntha (re-parsing)
-    if (typeof data.language === "string")
-      data.language = JSON.parse(data.language);
-    if (typeof data.genres === "string") data.genres = JSON.parse(data.genres);
-  } catch (e) {
-    console.log("Parse Error for movie:", data.title, e);
-    data.language = [];
-    data.genres = [];
-  }
+  // Parse panna vendiya fields list
+  const jsonFields = [
+    "language",
+    "genres",
+    "topCast",
+    "mediaLinks",
+    "galleryLinks",
+  ];
+
+  jsonFields.forEach((field) => {
+    try {
+      if (data[field]) {
+        // Data string-ah irukkira varai thirumba thirumba parse pannu
+        while (typeof data[field] === "string") {
+          data[field] = JSON.parse(data[field]);
+        }
+      } else {
+        // Oru vela data illana default-ah empty array kudu
+        data[field] = [];
+      }
+    } catch (e) {
+      // Intha catch block-la data JSON illatha normal string-ah iruntha filter pannidum
+      console.log(`Parse Finished/Error for ${field}:`, e.message);
+
+      // Error vantha (e.g. normal string "Tamil | Hindi") athai array-va mathurathu safety
+      if (typeof data[field] === "string") {
+        data[field] = [data[field]];
+      }
+    }
+  });
 
   return data;
 };
@@ -151,7 +201,10 @@ exports.getMovieDetailsBySlug = async (req, res) => {
     // Atomic increment for popularity tracking
     await movie.increment("viewCount");
 
-    res.status(200).json({ success: true, data: movie });
+    // ✨ INGA THAAN CHANGE: Response anupurathuku munnadi parse pannanum
+    const processedMovie = parseMovieFields(movie);
+
+    res.status(200).json({ success: true, data: processedMovie });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server Error" });
   }
@@ -178,9 +231,9 @@ exports.getAllMoviesAdmin = async (req, res) => {
 // @desc    Create Movie (All 35+ Fields)
 exports.createMovie = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, galleryLinks } = req.body;
 
-    console.log(req.body);
+    //console.log(req.body);
     if (!title)
       return res
         .status(400)
@@ -191,6 +244,21 @@ exports.createMovie = async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "Banner image is mandatory" });
+    }
+
+    // 📸 Process Gallery Links (Full URL to ID)
+    let processedGalleryIds = [];
+
+    if (galleryLinks) {
+      // Form-data-la irunthu varum pothu string-ah iruntha parse pannanum
+      const linksArray =
+        typeof galleryLinks === "string"
+          ? JSON.parse(galleryLinks)
+          : galleryLinks;
+
+      processedGalleryIds = linksArray
+        .map((link) => getYouTubeID(link))
+        .filter((id) => id !== null);
     }
 
     // Automatic slug with timestamp to avoid duplicates
@@ -216,6 +284,8 @@ exports.createMovie = async (req, res) => {
       ratingCount: parseInt(req.body.ratingCount || 0),
       viewCount: parseInt(req.body.viewCount || 0),
       order: parseInt(req.body.order || 1),
+      // 🆕 Gallery Storage
+      galleryLinks: processedGalleryIds,
     });
     res.status(201).json({
       success: true,
@@ -239,6 +309,18 @@ exports.updateMovie = async (req, res) => {
         .json({ success: false, message: "Movie not found" });
 
     let updateData = { ...req.body };
+
+    // 📸 Update Gallery Links if provided
+    if (updateData.galleryLinks) {
+      const linksArray =
+        typeof updateData.galleryLinks === "string"
+          ? JSON.parse(updateData.galleryLinks)
+          : updateData.galleryLinks;
+
+      updateData.galleryLinks = linksArray
+        .map((link) => (link.includes("youtu") ? getYouTubeID(link) : link)) // Puthu link-na ID edukkum, already ID-ah iruntha tholla pannathu
+        .filter((id) => id !== null);
+    }
 
     // If new image is uploaded
     // If new image is uploaded

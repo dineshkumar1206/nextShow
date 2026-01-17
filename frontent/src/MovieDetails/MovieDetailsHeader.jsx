@@ -23,13 +23,21 @@ const MovieDetailsHeader = ({ movie }) => {
       {/* 1. Movie Title and Ratings Section - Responsive Flex */}
       <div className="py-4 md:py-6 flex flex-col md:flex-row justify-between items-start gap-4">
         <div>
-          <h1 className="text-3xl md:text-5xl font-semibold mb-2">
-            {movie.title}
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl md:text-5xl font-semibold mb-2">
+              {movie.title}
+            </h1>
+            <span className="px-3 py-1 bg-slate-100 rounded-full font-semibold text-[13px] text-black">
+              {movie.certification}
+            </span>
+          </div>
           <div className="flex flex-wrap gap-3 text-gray-400 text-xs md:text-sm">
-            <span>Original title: {movie.title}</span>
-            <span>{new Date(movie.createdAt).getFullYear()}</span>
-            <span>{movie.durationOrSeason}</span>
+            <span className="font-bold">
+              Running Hours :{" "}
+              <span className="tracking-[1px]">{movie.durationOrSeason}</span>
+            </span>
+            {/* <span>{new Date(movie.createdAt).getFullYear()}</span> */}
+            {/* <span>{movie.durationOrSeason}</span> */}
           </div>
         </div>
 
@@ -37,7 +45,7 @@ const MovieDetailsHeader = ({ movie }) => {
         <div className="flex gap-6 md:gap-8 w-full md:w-auto justify-start md:justify-end border-t border-gray-800 pt-4 md:pt-0 md:border-none">
           <div className="text-center">
             <span className="text-[10px] md:text-xs font-bold text-gray-400 block tracking-widest uppercase">
-              IMDb RATING
+              RATING
             </span>
             <div className="flex items-center gap-2 mt-1">
               <Star
@@ -83,7 +91,7 @@ const MovieDetailsHeader = ({ movie }) => {
           </div>
 
           {/* Sidebar Buttons (Videos/Photos) - Mobile-la poster pakathula varum */}
-          <div className="col-span-8 md:hidden flex gap-2">
+          {/* <div className="col-span-8 md:hidden flex gap-2">
             <div className="flex-1 bg-[#252525] rounded-lg flex flex-col items-center justify-center gap-1">
               <Play size={24} />
               <span className="text-[10px] font-bold uppercase">1 Video</span>
@@ -92,11 +100,11 @@ const MovieDetailsHeader = ({ movie }) => {
               <ImageIcon size={24} />
               <span className="text-[10px] font-bold uppercase">31 Photos</span>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Video Player Area - Main Focus */}
-        <div className="order-1 md:order-2 lg:order-none md:col-span-7 bg-black relative rounded-lg group overflow-hidden aspect-video md:aspect-auto">
+        <div className="order-1 md:col-span-9 md:order-2 lg:order-none  bg-black relative rounded-lg group overflow-hidden aspect-video md:aspect-auto">
           {isPlaying ? (
             <div className="w-full h-full">
               <VideoPlayer
@@ -141,7 +149,7 @@ const MovieDetailsHeader = ({ movie }) => {
         </div>
 
         {/* Desktop Sidebar (Only visible on MD up) */}
-        <div className="hidden md:flex md:col-span-2 flex-col gap-2">
+        {/* <div className="hidden md:flex md:col-span-2 flex-col gap-2">
           <div className="flex-1 bg-[#252525] rounded-lg flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-[#333]">
             <Play size={32} />
             <span className="text-xs font-bold uppercase">1 Video</span>
@@ -150,7 +158,7 @@ const MovieDetailsHeader = ({ movie }) => {
             <ImageIcon size={32} />
             <span className="text-xs font-bold uppercase">31 Photos</span>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* 3. Description Section */}

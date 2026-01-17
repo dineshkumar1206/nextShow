@@ -47,6 +47,17 @@ const CentralizedMovieCreate = sequelize.define(
       allowNull: true,
       defaultValue: "TBA", // To Be Announced
     },
+    // ✍️ Eluthalar (Writer) - NEWLY ADDED
+    writer: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+      defaultValue: "TBA",
+    },
+    // 💰 Tayarippalar (Producer) - NEWLY ADDED
+    producer: {
+      type: DataTypes.STRING,
+      defaultValue: "TBA",
+    },
     // 👥 Nadigargal (Cast)
     cast: {
       type: DataTypes.TEXT,
@@ -216,6 +227,16 @@ const CentralizedMovieCreate = sequelize.define(
       allowNull: true,
       defaultValue: [],
     },
+    /**
+     * 📸 Movie Gallery Section (YouTube Links)
+     * Admin will send: ["https://youtu.be/zdu0YzzJ10o", "https://youtu.be/id2"]
+     * Store aagum pothu: ["zdu0YzzJ10o", "id2"] - ID mattum store panna easy-ah irukum.
+     */
+    galleryLinks: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: [],
+    },
   },
   {
     tableName: "centralized_movie_create",
@@ -241,7 +262,7 @@ const CentralizedMovieCreate = sequelize.define(
         }
       },
     },
-  }
+  },
 );
 
 module.exports = CentralizedMovieCreate;

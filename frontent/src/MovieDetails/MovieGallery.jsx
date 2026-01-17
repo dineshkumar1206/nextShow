@@ -1,75 +1,137 @@
 import React from "react";
-import { ChevronRight, Plus } from "lucide-react";
+import Slider from "react-slick";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
+import { ChevronRight } from "lucide-react";
+
+// ⭐ Arrows Reusable
+const NextArrow = ({ className, style, onClick }) => (
+  <div className="hidden md:hidden lg:block">
+    <div
+      className={`
+      ${className}  !right-[-25px] !z-20 !w-12 !h-12 
+      flex items-center justify-center 
+      rounded-full 
+      bg-gradient-to-br from-[#ffffff25] to-[#00000055]
+      border border-white/20 
+      backdrop-blur-md
+      hover:from-[#ffffff40] hover:to-[#00000080]
+      transition-all duration-300 cursor-pointer shadow-lg
+    `}
+      style={{ ...style, display: "flex" }}
+      onClick={onClick}
+    >
+      <HiChevronRight className="text-white text-3xl drop-shadow-xl" />
+    </div>
+  </div>
+);
+
+const PrevArrow = ({ className, style, onClick }) => (
+  <div className="hidden md:hidden lg:block">
+    <div
+      className={`
+      ${className} !left-[-25px] !z-20 !w-12 !h-12 
+      flex items-center justify-center 
+      rounded-full 
+      bg-gradient-to-br from-[#ffffff25] to-[#00000055]
+      border border-white/20 
+      backdrop-blur-md
+      hover:from-[#ffffff40] hover:to-[#00000080]
+      transition-all duration-300 cursor-pointer shadow-lg
+    `}
+      style={{ ...style, display: "flex" }}
+      onClick={onClick}
+    >
+      <HiChevronLeft className="text-white text-3xl drop-shadow-xl" />
+    </div>
+  </div>
+);
 
 const MovieGallery = () => {
-  // Youtube Video IDs list (Ithu dynamic-ah namma mathikalaam)
+  // Dynamic Video/Photo IDs
   const videoIds = [
-    //"vpAR9raWe-BcQYvB", // Main Trailer
-    "zdu0YzzJ10o", // Teaser
-    "zdu0YzzJ10o", // Song 1
-    "zdu0YzzJ10o", // BTS
-    "zdu0YzzJ10o", // Promo 1
-    "zdu0YzzJ10o", // Promo 2
-    "zdu0YzzJ10o", // Interview
-    "zdu0YzzJ10o", // Event
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
+    "zdu0YzzJ10o",
   ];
 
-  // YouTube Thumbnail URL function
   const getYTThumbnail = (id) =>
     `https://img.youtube.com/vi/${id}/mqdefault.jpg`;
 
+  const settings = {
+    dots: false,
+    infinite: videoIds.length > 4, // 4-ku mela iruntha mattum infinite
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 3 },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+          arrows: false,
+          centerMode: true,
+          centerPadding: "20px",
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1.5, // Mobile-la konjam next photo theriya
+          arrows: false,
+          centerMode: true,
+          centerPadding: "20px",
+        },
+      },
+    ],
+  };
+
   return (
-    <div className="py-8 bg-[#121212] max-w-4xl text-white">
+    <div className="py-8 bg-[#0f0f0f] text-white">
       {/* Header Section */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex items-center gap-4 group cursor-pointer">
+      <div className="flex justify-between items-center mb-6 px-4">
+        <div className="flex items-center gap-2 group cursor-pointer">
           <h2 className="text-2xl md:text-3xl font-bold flex items-center">
-            Photos{" "}
-            {/* <span className="text-gray-500 ml-3 font-normal text-xl">31</span> */}
+            Photos
             <ChevronRight
               className="ml-2 group-hover:text-yellow-500 transition-colors"
               size={28}
             />
           </h2>
+          <span className="text-gray-500 font-normal text-xl">
+            ({videoIds.length})
+          </span>
         </div>
-
-        {/* <button className="flex items-center gap-2 text-blue-400 font-semibold hover:bg-blue-400/10 px-4 py-2 rounded-md transition-colors text-sm md:text-base">
-          <Plus size={20} />
-          Add photo
-        </button> */}
       </div>
 
-      {/* Responsive Gallery Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        {videoIds.map((id, index) => (
-          <div
-            key={index}
-            className={`relative overflow-hidden rounded-lg cursor-pointer group bg-zinc-900
-              ${index === 3 ? "md:col-span-2 md:row-span-1" : ""} 
-              ${index === 4 ? "md:col-span-1 md:row-span-1" : ""}
-            `}
-          >
-            {/* YouTube Thumbnail Image */}
-            <img
-              src={getYTThumbnail(id)}
-              alt={`Gallery item ${index + 1}`}
-              className="w-full h-full object-cover aspect-video md:aspect-auto md:h-48 group-hover:scale-105 transition-transform duration-300 opacity-90 group-hover:opacity-100"
-            />
+      {/* Carousel Section - Ellame images-ah mattum kaatum */}
+      <div className="relative px-2 md:px-8">
+        <Slider {...settings}>
+          {videoIds.map((id, index) => (
+            <div key={index} className="px-2">
+              <div className="relative overflow-hidden rounded-xl cursor-pointer group bg-zinc-900 border border-white/5 shadow-md">
+                <img
+                  src={getYTThumbnail(id)}
+                  alt={`Gallery item ${index + 1}`}
+                  className="w-full object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                />
 
-            {/* Overlay for +Count (Last Image-ku mattum) */}
-            {index === videoIds.length - 1 && (
-              <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center">
-                <span className="text-2xl font-bold">+23</span>
-                <span className="text-[10px] uppercase tracking-widest font-bold">
-                  Photos
-                </span>
+                {/* Hover Effect Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-            )}
-
-            {/* Hover overlay effect */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-        ))}
+            </div>
+          ))}
+        </Slider>
       </div>
     </div>
   );

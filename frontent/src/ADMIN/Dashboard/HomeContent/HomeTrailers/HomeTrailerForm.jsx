@@ -131,7 +131,7 @@ const HomeTrailerForm = ({ isOpen, onClose, contentData, setAlert }) => {
         onClose();
         setAlert(
           "success",
-          `Content ${isEdit ? "updated" : "published"} successfully!`
+          `Content ${isEdit ? "updated" : "published"} successfully!`,
         );
       })
       .catch((err) => setAlert("error", err));

@@ -23,6 +23,8 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
     status: "RELEASED", // Upcoming, Released, Postponed
     streamType: "NEW_RELEASE", // NEW_RELEASE, TRENDING, UPCOMING
     director: "TBA",
+    writer: "TBA", // ✨ PUTUSU: Added writer
+    producer: "TBA", // ✨ PUTUSU: Added producer
     cast: "",
     releaseDate: dayjs().format("DD-MM-YYYY"),
     certification: "U/A 18+",
@@ -43,6 +45,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
     metaTitle: "",
     metaDescription: "",
     genres: ["Drama"], // Added
+    galleryLinks: [], // ✨ Added galleryLink state
     theatreReleaseDate: dayjs().format("DD-MM-YYYY"),
     ottReleaseDate: dayjs().format("DD-MM-YYYY"),
     longDescription: "", // Added
@@ -50,13 +53,32 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
     isActive: true, // Added
   };
 
-  console.log(initialFormState);
+  //console.log(contentData);
 
   const [formData, setFormData] = useState(initialFormState);
   const [bannerFile, setBannerFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
   const isEdit = !!contentData;
+
+  // ✨ --- Gallery Logic Start ---
+  const handleGalleryChange = (index, value) => {
+    const updatedLinks = [...formData.galleryLinks];
+    updatedLinks[index] = value;
+    setFormData({ ...formData, galleryLinks: updatedLinks });
+  };
+
+  const addGalleryField = () => {
+    setFormData({
+      ...formData,
+      galleryLinks: [...formData.galleryLinks, ""],
+    });
+  };
+
+  const removeGalleryField = (index) => {
+    const updatedLinks = formData.galleryLinks.filter((_, i) => i !== index);
+    setFormData({ ...formData, galleryLinks: updatedLinks });
+  };
 
   const GENRE_OPTIONS = [
     "Action",
@@ -112,6 +134,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
         ...contentData,
         genres: parseArrayData(contentData.genres),
         language: parseArrayData(contentData.language),
+        galleryLinks: parseArrayData(contentData.galleryLinks), // ✨ Parse galleryLink
       });
       setPreview(contentData.bannerImage);
     } else {
@@ -138,7 +161,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
     e.preventDefault();
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
-      if (key === "genres" || key === "language") {
+      if (key === "genres" || key === "language" || key === "galleryLinks") {
         data.append(key, JSON.stringify(formData[key]));
       } else {
         data.append(key, formData[key]);
@@ -159,7 +182,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
         onClose();
         setAlert(
           "success",
-          `Movie ${isEdit ? "updated" : "published"} successfully!`
+          `Movie ${isEdit ? "updated" : "published"} successfully!`,
         );
       })
       .catch((err) => setAlert("error", err));
@@ -437,8 +460,8 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
                   const valuesArray = Array.isArray(value)
                     ? value
                     : value
-                    ? [value]
-                    : [];
+                      ? [value]
+                      : [];
 
                   return valuesArray.map((option, index) => {
                     const { key, ...tagProps } = getTagProps({ index });
@@ -486,8 +509,8 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
                   const valuesArray = Array.isArray(value)
                     ? value
                     : value
-                    ? [value]
-                    : [];
+                      ? [value]
+                      : [];
 
                   return valuesArray.map((option, index) => {
                     const { key, ...tagProps } = getTagProps({ index });
@@ -535,6 +558,34 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
                   setFormData({ ...formData, director: e.target.value })
                 }
                 className="w-full border-b p-2"
+              />
+            </div>
+            {/* ✨ Writer Field Added */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase">
+                Writer
+              </label>
+              <input
+                type="text"
+                value={formData.writer}
+                onChange={(e) =>
+                  setFormData({ ...formData, writer: e.target.value })
+                }
+                className="w-full border-b p-2 outline-none focus:border-indigo-500 bg-transparent"
+              />
+            </div>
+            {/* ✨ Producer Field Added */}
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase">
+                Producer
+              </label>
+              <input
+                type="text"
+                value={formData.producer}
+                onChange={(e) =>
+                  setFormData({ ...formData, producer: e.target.value })
+                }
+                className="w-full border-b p-2 outline-none focus:border-indigo-500 bg-transparent"
               />
             </div>
             <div>

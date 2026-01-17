@@ -1,5 +1,6 @@
 import React from "react";
 import { Plus, ChevronRight, Settings, Eye, ExternalLink } from "lucide-react";
+import OTTBadge from "../Components/OTTBadge";
 
 const MovieDescriptionSection = ({ movie }) => {
   // const genres = [
@@ -18,6 +19,8 @@ const MovieDescriptionSection = ({ movie }) => {
   //     return [];
   //   }
   // };
+
+  console.log(movie);
 
   const parseData = (data) => {
     try {
@@ -42,6 +45,33 @@ const MovieDescriptionSection = ({ movie }) => {
 
   return (
     <div className="py-6 bg-[#121212] space-y-4 mb-8 text-white">
+      {/* --- New Release Dates Section --- */}
+      <div className="space-y-2 mb-6 border-b border-gray-800 pb-4">
+        <div className="flex items-center gap-4">
+          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest min-w-[150px]">
+            Theater Release Date
+          </span>
+          <span className="text-sm md:text-base font-medium text-gray-200 uppercase tracking-wider">
+            {movie.theatreReleaseDate}
+          </span>
+        </div>
+        <div className="flex items-center gap-4">
+          <span className="text-[11px] font-bold text-gray-500 uppercase tracking-widest min-w-[150px]">
+            OTT Release Date
+          </span>
+          <span className="text-sm md:text-base font-medium text-gray-200 uppercase tracking-wider">
+            {movie.ottReleaseDate || "N/A"}
+          </span>
+
+          {/* Logic: Date irundha mattum Badge render aagum */}
+          {movie.ottReleaseDate && movie.ottReleaseDate !== "N/A" && (
+            <OTTBadge
+              platformName={movie.ottPlatform}
+              defaultName={["Netflix", "Amazon Prime", ["Jio Hotstar"]]}
+            />
+          )}
+        </div>
+      </div>
       {/* Genres & Languages Tags */}
       {/* Language Section */}
       <div className="flex items-center gap-3">
@@ -88,26 +118,26 @@ const MovieDescriptionSection = ({ movie }) => {
           {/* Director, Writer, Stars List */}
           <div className="space-y-1 border-t border-gray-700">
             <div className="flex items-center py-3 border-b border-gray-700">
-              <span className="font-bold w-20 text-sm md:text-base">
+              <span className="font-bold w-40 truncate text-sm md:text-base">
                 Director
               </span>
-              <span className="text-blue-400 hover:underline cursor-pointer ml-2 text-sm md:text-base">
+              <span className="text-blue-400  ml-2 text-sm md:text-base">
                 {movie.director}
               </span>
             </div>
 
             <div className="flex items-center py-3 border-b border-gray-700">
-              <span className="font-bold w-20 text-sm md:text-base">
+              <span className="font-bold w-40 truncate text-sm md:text-base">
                 Writer
               </span>
-              <span className="text-blue-400 hover:underline cursor-pointer ml-2 text-sm md:text-base">
+              <span className="text-blue-400  ml-2 text-sm md:text-base">
                 {movie.writer || "N/A"}
               </span>
             </div>
 
-            <div className="flex items-start md:items-center py-3 border-b border-gray-700 group cursor-pointer">
-              <span className="font-bold w-20 shrink-0 text-sm md:text-base">
-                Stars
+            <div className="flex items-start md:items-center py-3 border-b border-gray-700 group ">
+              <span className="font-bold w-40 truncate shrink-0 text-sm md:text-base">
+                Cast
               </span>
               <div className="flex-1 overflow-hidden items-center ml-2">
                 {/* line-clamp-2 nu potta 2 lines-ku mela pona truncate aagum */}
@@ -115,9 +145,7 @@ const MovieDescriptionSection = ({ movie }) => {
                   {movie.cast ? (
                     movie.cast.split(",").map((star, index, array) => (
                       <React.Fragment key={index}>
-                        <span className="text-blue-400 hover:underline cursor-pointer">
-                          {star.trim()}
-                        </span>
+                        <span className="text-blue-400 ">{star.trim()}</span>
                         {index < array.length - 1 && (
                           <span className="text-white mx-2 font-bold">•</span>
                         )}
@@ -135,13 +163,29 @@ const MovieDescriptionSection = ({ movie }) => {
                 />
               </div>
             </div>
+            <div className="flex items-center py-3 border-b border-gray-700">
+              <span className="font-bold w-40 truncate text-sm md:text-base">
+                Music Director
+              </span>
+              <span className="text-blue-400  ml-2 text-sm md:text-base">
+                {movie.musicDirector || "N/A"}
+              </span>
+            </div>
+            <div className="flex items-center py-3 border-b border-gray-700">
+              <span className="font-bold w-40 truncate text-sm md:text-base">
+                Producer
+              </span>
+              <span className="text-blue-400  ml-2 text-sm md:text-base">
+                {movie.producer || "N/A"}
+              </span>
+            </div>
 
             {/* IMDb Pro Link */}
-            <div className="flex items-center pt-4 text-blue-400 text-xs md:text-sm font-medium hover:underline cursor-pointer">
+            {/* <div className="flex items-center pt-4 text-blue-400 text-xs md:text-sm font-medium hover:underline cursor-pointer">
               <span className="text-white font-black italic mr-2">IMDbPro</span>
               <span>See production info at IMDbPro</span>
               <ExternalLink size={14} className="ml-1" />
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -173,7 +217,7 @@ const MovieDescriptionSection = ({ movie }) => {
           </div> */}
 
           {/* Streaming Info */}
-          <div className="pt-2">
+          <div className="pt-2 min-h-[100px]">
             <span className="text-[10px] md:text-xs font-bold text-yellow-500 block mb-2 uppercase tracking-widest">
               Streaming
             </span>
@@ -189,7 +233,7 @@ const MovieDescriptionSection = ({ movie }) => {
           </div>
 
           {/* Reviews Info */}
-          <div className="flex gap-6 text-blue-400 text-xs md:text-sm font-medium border-t border-gray-800 lg:border-none pt-4 lg:pt-0">
+          {/* <div className="flex gap-6 text-blue-400 text-xs md:text-sm font-medium border-t border-gray-800 lg:border-none pt-4 lg:pt-0">
             <span className="hover:underline cursor-pointer">
               129{" "}
               <span className="text-gray-400 font-normal">User reviews</span>
@@ -198,7 +242,7 @@ const MovieDescriptionSection = ({ movie }) => {
               5{" "}
               <span className="text-gray-400 font-normal">Critic reviews</span>
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -18,8 +18,10 @@ const CentralizedSection = () => {
   const [snack, setSnack] = useState({ open: false, msg: "", type: "info" });
 
   const { movies, isLoading, isError, isSuccess, message } = useSelector(
-    (state) => state.centralizedMovies
+    (state) => state.centralizedMovies,
   );
+
+  // console.log(movies);
 
   useEffect(() => {
     dispatch(fetchAllMoviesAdmin());

@@ -34,7 +34,7 @@ router.post(
       maxCount: 1,
     },
   ]),
-  createStreamingNow
+  createStreamingNow,
 );
 
 // 4. விவரங்களை புதுப்பித்தல் (Update)
@@ -51,7 +51,7 @@ router.put(
       maxCount: 1,
     },
   ]),
-  updateStreamingNow
+  updateStreamingNow,
 );
 
 router.delete("/streaming-delete/:id", AdminAuthProtect, deleteStreamingNow);
