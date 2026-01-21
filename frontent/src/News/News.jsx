@@ -5,6 +5,7 @@ import { fetchActiveBlogs } from "../redux/HomeContentSlice/blogSlice";
 import Nprogress from "nprogress";
 import { FaSpinner } from "react-icons/fa";
 import LoadingComponents from "../Components/LoadingComponents";
+import LatestNewsList from "./LatestNewsList";
 
 const News = () => {
   const dispatch = useDispatch();
@@ -44,8 +45,9 @@ const News = () => {
     return <LoadingComponents />;
   }
   return (
-    <div>
-      <NewsHome />
+    <div className="mt-16">
+      <NewsHome blogs={activeBlogs} />
+      <LatestNewsList />
     </div>
   );
 };

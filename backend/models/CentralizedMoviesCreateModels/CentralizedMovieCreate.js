@@ -28,6 +28,24 @@ const CentralizedMovieCreate = sequelize.define(
       defaultValue: false,
     },
 
+    // 🏠 HOME PAGE - "New Movies" Section-la varanuma?
+    showInHomepage: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+
+    // // 🔥 HOME PAGE - "Trending Now" Section-la varanuma?
+    // showInHomeTrending: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false,
+    // },
+
+    // // 📱 HOME PAGE - "Streaming" Section-la varanuma? (PUTHUSU)
+    // showInHomeStreaming: {
+    //   type: DataTypes.BOOLEAN,
+    //   defaultValue: false,
+    // },
+
     // 🚦 Padathoda tharpothaiya nilai (Upcoming-aa illai release aayiducha?)
     status: {
       type: DataTypes.ENUM("UPCOMING", "RELEASED", "TRENDING"),
@@ -158,9 +176,10 @@ const CentralizedMovieCreate = sequelize.define(
       defaultValue: "N/A",
     },
     // 🔗 SEO Friendly URL
+    // ✅ FIXED: Unique constraint with name to avoid "Too many keys"
     slug: {
       type: DataTypes.STRING,
-      unique: true,
+      unique: "idx_unique_movie_slug",
     },
     // 🔍 SEO Title
     metaTitle: {
@@ -212,11 +231,11 @@ const CentralizedMovieCreate = sequelize.define(
      * { "name": "Arun Vijay", "role": "Ashwin", "img": "https://image-link.com/arun.jpg" }
      * ]
      */
-    topCast: {
-      type: DataTypes.JSON,
-      allowNull: true,
-      defaultValue: [],
-    },
+    // topCast: {
+    //   type: DataTypes.JSON,
+    //   allowNull: true,
+    //   defaultValue: [],
+    // },
     /**
      * 📸 Photos/Videos Section
      * Inga neenga YouTube URLs mattum store panna pothum.

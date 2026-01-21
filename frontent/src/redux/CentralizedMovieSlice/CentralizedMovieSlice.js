@@ -27,10 +27,10 @@ export const fetchNewMoviesPage = createAsyncThunk(
       return res.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        getThunkError(error, "Failed to load new movies")
+        getThunkError(error, "Failed to load new movies"),
       );
     }
-  }
+  },
 );
 
 export const fetchStreamingNowPage = createAsyncThunk(
@@ -41,10 +41,26 @@ export const fetchStreamingNowPage = createAsyncThunk(
       return res.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        getThunkError(error, "Failed to load streaming data")
+        getThunkError(error, "Failed to load streaming data"),
       );
     }
-  }
+  },
+);
+
+export const fetchHomePageData = createAsyncThunk(
+  "centralizedMovies/fetchHomeData",
+  async (_, thunkAPI) => {
+    try {
+      // Backend-la namma create panna puthu endpoint
+      const res = await api.get("/centralized/home-pageData");
+      //console.log(res.data.data);
+      return res.data.data; // { trending, newMovies, streaming }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        getThunkError(error, "Failed to load Home Page data"),
+      );
+    }
+  },
 );
 
 export const fetchMovieBySlug = createAsyncThunk(
@@ -56,7 +72,7 @@ export const fetchMovieBySlug = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(getThunkError(error, "Movie not found"));
     }
-  }
+  },
 );
 
 export const fetchAllMoviesAdmin = createAsyncThunk(
@@ -67,10 +83,10 @@ export const fetchAllMoviesAdmin = createAsyncThunk(
       return res.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
-        getThunkError(error, "Failed to fetch admin list")
+        getThunkError(error, "Failed to fetch admin list"),
       );
     }
-  }
+  },
 );
 
 export const createMovie = createAsyncThunk(
@@ -84,7 +100,7 @@ export const createMovie = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(getThunkError(error, "Creation failed"));
     }
-  }
+  },
 );
 
 export const updateMovie = createAsyncThunk(
@@ -98,7 +114,7 @@ export const updateMovie = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(getThunkError(error, "Update failed"));
     }
-  }
+  },
 );
 
 export const deleteMovie = createAsyncThunk(
@@ -110,7 +126,7 @@ export const deleteMovie = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(getThunkError(error, "Deletion failed"));
     }
-  }
+  },
 );
 
 /* =====================================================
@@ -126,7 +142,7 @@ const centralizedMovieSlice = createSlice({
     isSuccess: false,
     isError: false,
     message: "",
-
+    homePageData: { newReleases: [], upcoming: [] },
     newMoviesData: { upcoming: [], newReleases: [] },
     streamingData: { upcoming: [], newReleases: [] },
     isPublicLoading: false,
@@ -182,6 +198,19 @@ const centralizedMovieSlice = createSlice({
         state.currentMovie = action.payload;
       })
       .addCase(fetchMovieBySlug.rejected, (state, action) => {
+        state.isPublicLoading = false;
+        state.isPublicError = true;
+        state.message = action.payload;
+      })
+      /* --- FETCH HOME PAGE DATA --- */
+      .addCase(fetchHomePageData.pending, (state) => {
+        state.isPublicLoading = true;
+      })
+      .addCase(fetchHomePageData.fulfilled, (state, action) => {
+        state.isPublicLoading = false;
+        state.homePageData = action.payload; // Data-va inga store pandrom
+      })
+      .addCase(fetchHomePageData.rejected, (state, action) => {
         state.isPublicLoading = false;
         state.isPublicError = true;
         state.message = action.payload;

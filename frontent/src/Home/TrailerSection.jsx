@@ -205,11 +205,13 @@ export const MOVIE_REVIEWS_DATA = [
 
 const TrailerSection = ({ activeHomeTrailers }) => {
   const upcomingMovies = activeHomeTrailers.filter(
-    (m) => m.streamType === "UPCOMING"
+    (m) => m.streamType === "UPCOMING",
   );
-  const newReleases = activeHomeTrailers.filter((m) => m.streamType === "NEW");
+  const newReleases = activeHomeTrailers.filter(
+    (m) => m.streamType === "NEW_RELEASE",
+  );
   const trendingNow = activeHomeTrailers.filter(
-    (m) => m.streamType === "TRENDING"
+    (m) => m.streamType === "TRENDING",
   );
 
   return (

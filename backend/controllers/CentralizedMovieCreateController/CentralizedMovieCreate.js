@@ -228,10 +228,56 @@ exports.getAllMoviesAdmin = async (req, res) => {
   }
 };
 
+// @desc    Get Home Page All Sections
+exports.getHomePageData = async (req, res) => {
+  try {
+    const [upcomingRaw, newReleasesRaw] = await Promise.all([
+      CentralizedMovieCreate.findAll({
+        where: {
+          showInHomepage: true,
+          streamType: "UPCOMING",
+          isActive: true,
+        },
+        order: [["order", "ASC"]],
+      }),
+      CentralizedMovieCreate.findAll({
+        where: {
+          showInHomepage: true,
+          streamType: "NEW_RELEASE",
+          isActive: true,
+        },
+        order: [["order", "ASC"]],
+      }),
+      // CentralizedMovieCreate.findAll({
+      //   where: {
+      //     showInHomeStreaming: true,
+      //     isActive: true,
+      //   },
+      //   order: [["order", "ASC"]],
+      // }),
+    ]);
+
+    // Clean data using your parseMovieFields helper
+    const upcoming = upcomingRaw.map(parseMovieFields);
+    const newReleases = newReleasesRaw.map(parseMovieFields);
+    // const streaming = streamingRaw.map(parseMovieFields);
+
+    res.status(200).json({
+      success: true,
+      data: { upcoming, newReleases },
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching Home data" });
+  }
+};
+
 // @desc    Create Movie (All 35+ Fields)
 exports.createMovie = async (req, res) => {
   try {
     const { title, galleryLinks } = req.body;
+    // console.log(req.body);
 
     //console.log(req.body);
     if (!title)
@@ -276,6 +322,11 @@ exports.createMovie = async (req, res) => {
       // Boolean handling
       showInNewMovies: parseBool(req.body.showInNewMovies),
       showInStreamingNow: parseBool(req.body.showInStreamingNow),
+
+      // ✅ PUTHU FIELDS INGA ADD PANNUNGA
+      showInHomepage: parseBool(req.body.showInHomepage),
+      // showInHomeTrending: parseBool(req.body.showInHomeTrending),
+      // showInHomeStreaming: parseBool(req.body.showInHomeStreaming),
       isTrending: parseBool(req.body.isTrending),
       isActive: parseBool(req.body.isActive ?? true),
       // Numeric handling
@@ -287,6 +338,8 @@ exports.createMovie = async (req, res) => {
       // 🆕 Gallery Storage
       galleryLinks: processedGalleryIds,
     });
+
+    // console.log(newMovie);
     res.status(201).json({
       success: true,
       message: "Movie created successfully",
@@ -335,6 +388,9 @@ exports.updateMovie = async (req, res) => {
       "showInStreamingNow",
       "isTrending",
       "isActive",
+      "showInHomepage", // Added
+      // "showInHomeTrending", // Added
+      // "showInHomeStreaming", // Added
     ];
     booleanFields.forEach((field) => {
       if (updateData[field] !== undefined)

@@ -1,8 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const MovieReviewCard = ({ review }) => {
   return (
-    <div className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-xl overflow-hidden flex items-center p-2 gap-3 border border-dashed border-gray-800 hover:border-orange-400/60 transition-all duration-300 group group cursor-pointer w-full shadow-sm">
+    <Link
+      to={`/movie/${review.slug}`}
+      className="bg-gradient-to-br from-[#1a1a1a] to-[#0a0a0a] rounded-xl overflow-hidden flex items-center p-2 gap-3 border border-dashed border-gray-800 hover:border-orange-400/60 transition-all duration-300 group group cursor-pointer w-full shadow-sm"
+    >
       {/* 1. Small Square Movie Image */}
       <div className="flex flex-col items-center flex-shrink-0 gap-1.5">
         <div className="relative w-20 h-20 rounded-lg overflow-hidden">
@@ -19,7 +23,6 @@ const MovieReviewCard = ({ review }) => {
           </div>
         )}
       </div>
-
       {/* 2. Movie Details Section */}
       <div className="flex-1 min-w-0 pr-1">
         <h3 className="text-white text-base font-black truncate leading-tight mb-1 group-hover:text-orange-400 transition-colors">
@@ -67,7 +70,7 @@ const MovieReviewCard = ({ review }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -1,109 +1,157 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { useSelector } from "react-redux"; // Redux state-la irunthu data edukka
-import { FaUserAlt, FaVideo, FaCalendarAlt } from "react-icons/fa";
 
-const NewsHome = () => {
-  // Homepage blogs data-vai useSelector moolama edukka
-  const { activeBlogs } = useSelector((state) => state.blogSection);
+// Dummy Data matching your API response structure
+const dummyBlogs = [
+  {
+    id: 1,
+    title: "Jana Nayagan Official Update",
+    bannerImage:
+      "https://res.cloudinary.com/dcock9gai/image/upload/v1766850721/ott_platform/images/q47zixgfiimrnylwokzn.jpg",
+    shortDescription:
+      "Jana Nayagan ('People's Hero') is an upcoming Indian Tamil-language action thriller...",
+    starCast: "Vijay, Pooja Hegde",
+    directedBy: "H Vinoth",
+    newsDate: "Dec 27, 2025",
+    category: "Cinema Exclusive", // Extra key for UI
+  },
+  {
+    id: 2,
+    title: "Madharasi",
+    bannerImage:
+      "https://res.cloudinary.com/dcock9gai/image/upload/v1766851081/ott_platform/images/jkpiyzpybcunadjarzux.jpg",
+    shortDescription:
+      "Madharaasi (2025) is an AR Murugadoss-directed Tamil action thriller starring Sivakarthikeyan...",
+    starCast: "Sivakarthikeyan, Sapthami",
+    directedBy: "AR Murugadoss",
+    newsDate: "Dec 30, 2025",
+    category: "Trending",
+  },
+  {
+    id: 6,
+    title: "Sardar 2",
+    bannerImage:
+      "https://res.cloudinary.com/dcock9gai/image/upload/v1766909227/ott_platform/images/rltrxa1yis8peyz22oca.jpg",
+    shortDescription:
+      "Sardar 2 (Tamil) is a spy-action sequel to Sardar (2022), starring Karthi...",
+    starCast: "Karthi, S.J. Suryah",
+    directedBy: "P.S. Mithran",
+    newsDate: "Oct 28, 2025",
+    category: "Spy Thriller",
+  },
+  {
+    id: 4,
+    title: "Thalapathy 69",
+    bannerImage:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=1000&auto=format&fit=crop",
+    shortDescription:
+      "The final film of Thalapathy Vijay directed by H Vinoth.",
+    starCast: "Vijay, Bobby Deol",
+    directedBy: "H Vinoth",
+    newsDate: "Jan 05, 2026",
+    category: "Big News",
+  },
+  {
+    id: 5,
+    title: "Vidaa Muyarchi",
+    bannerImage:
+      "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?q=80&w=1000&auto=format&fit=crop",
+    shortDescription:
+      "Ajith Kumar's long awaited action entertainer filmed in Azerbaijan.",
+    starCast: "Ajith Kumar, Trisha",
+    directedBy: "Magizh Thirumeni",
+    newsDate: "Jan 10, 2026",
+    category: "Kollywood",
+  },
+];
+
+const NewsHeroSection = () => {
+  const featured = dummyBlogs[0];
+  const sideBlogs = dummyBlogs.slice(1, 5);
 
   return (
-    <div className="pt-28 pb-20 px-6 md:px-14 bg-black min-h-screen text-white">
-      {/* Header Section */}
-      <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
-        <div>
-          <p
-            // initial={{ opacity: 0 }}
-            // animate={{ opacity: 1 }}
-            className="text-orange-500 font-bold tracking-widest uppercase text-sm mb-2"
-          >
-            Latest Headlines
-          </p>
-          <h2
-            // initial={{ opacity: 0, y: 10 }}
-            // animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-black italic tracking-tighter"
-          >
-            CINEMA{" "}
-            <span className="text-orange-500 text-outline">CHRONICLES</span>
+    <section className="bg-gray-50 py-10 font-sans">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Section Header */}
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-gray-900 border-l-4 border-blue-600 pl-3">
+            Latest <span className="text-blue-600">Updates</span>
           </h2>
+          <div className="h-[1px] flex-1 bg-gray-200 ml-4 hidden md:block"></div>
         </div>
-        <div className="h-[2px] flex-1 bg-gradient-to-r from-orange-500/50 to-transparent hidden md:block mb-4 ml-6"></div>
-      </div>
 
-      {/* Modern Card Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-        {activeBlogs?.map((blog, index) => (
-          <div
-            key={blog.id}
-            // initial={{ opacity: 0, scale: 0.95 }}
-            // whileInView={{ opacity: 1, scale: 1 }}
-            // viewport={{ once: true }}
-            // transition={{ delay: index * 0.1 }}
-            className="group relative flex flex-col md:flex-row bg-[#111] rounded-3xl overflow-hidden border border-white/5 hover:border-orange-500/30 transition-all duration-500"
-          >
-            {/* Image Section */}
-            <div className="w-full md:w-2/5 h-64 md:h-auto overflow-hidden relative">
-              <img
-                src={blog.bannerImage}
-                alt={blog.title}
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black md:bg-gradient-to-r md:from-transparent md:to-black/20"></div>
+        <div className="grid grid-cols-12 gap-6">
+          {/* 🏆 LEFT BIG FEATURED CARD */}
+          <div className="col-span-12 lg:col-span-7 relative group overflow-hidden rounded-3xl cursor-pointer shadow-2xl bg-black">
+            <img
+              src={featured.bannerImage}
+              alt={featured.title}
+              className="w-full h-[550px] object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-70"
+            />
 
-              {/* Floating Date Badge */}
-              <div className="absolute top-4 left-4 bg-orange-600/90 backdrop-blur-md px-3 py-1 rounded-lg flex items-center gap-2 text-xs font-bold">
-                <FaCalendarAlt /> {blog.newsDate}
-              </div>
-            </div>
+            {/* Premium Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20"></div>
 
-            {/* Content Section */}
-            <div className="w-full md:w-3/5 p-6 flex flex-col justify-between">
-              <div>
-                <h3 className="text-2xl font-bold mb-3 group-hover:text-orange-400 transition-colors">
-                  {blog.title}
-                </h3>
-                <p className="text-gray-400 text-sm line-clamp-2 mb-4 leading-relaxed">
-                  {blog.shortDescription}
-                </p>
+            <div className="absolute bottom-0 left-0 w-full p-10 z-30">
+              <span className="inline-block bg-blue-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full uppercase mb-5 shadow-lg">
+                🔥 {featured.category}
+              </span>
 
-                {/* Movie Info Badges */}
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <div className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full text-[10px] text-gray-300 border border-white/10">
-                    <FaVideo className="text-orange-500" /> Dir:{" "}
-                    {blog.directedBy}
-                  </div>
-                  <div className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full text-[10px] text-gray-300 border border-white/10">
-                    <FaUserAlt className="text-orange-500" />{" "}
-                    {blog.starCast.split(",")[0]}
-                  </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4 group-hover:text-blue-300 transition-colors">
+                {featured.title}
+              </h2>
+
+              <p className="text-gray-300 text-sm md:text-base line-clamp-2 mb-6 max-w-2xl font-light">
+                {featured.shortDescription}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold uppercase tracking-widest text-white">
+                <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                  🎬 Dir: {featured.directedBy}
                 </div>
-              </div>
-
-              <div className="flex items-center justify-between mt-auto">
-                <div className="flex -space-x-2">
-                  <div className="w-8 h-8 rounded-full border-2 border-black bg-orange-500 flex items-center justify-center text-[10px] font-bold">
-                    NS
-                  </div>
+                <div className="bg-white/10 backdrop-blur-md px-4 py-2 rounded-lg border border-white/10">
+                  ⭐ {featured.starCast.split(",")[0]} {/* Showing main star */}
                 </div>
-                <button className="relative overflow-hidden group/btn px-6 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-orange-500 hover:text-white transition-all">
-                  FULL STORY
-                </button>
+                <div className="text-gray-400">📅 {featured.newsDate}</div>
               </div>
             </div>
           </div>
-        ))}
-      </div>
 
-      {/* Style for Text Outline (Optional) */}
-      <style>{`
-        .text-outline {
-          -webkit-text-stroke: 1px #f97316;
-          color: transparent;
-        }
-      `}</style>
-    </div>
+          {/* ⚡ RIGHT SIDE GRID */}
+          <div className="col-span-12 lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {sideBlogs.map((item) => (
+              <div
+                key={item.id}
+                className="relative group overflow-hidden rounded-3xl cursor-pointer h-[265px] shadow-lg border border-gray-100 flex flex-col justify-end"
+              >
+                <img
+                  src={item.bannerImage}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10"></div>
+
+                <div className="relative p-5 z-20">
+                  <span className="text-[10px] font-bold text-blue-400 uppercase mb-2 block">
+                    {item.directedBy}
+                  </span>
+                  <h3 className="text-white font-extrabold text-lg leading-tight line-clamp-2 group-hover:text-blue-200 transition-colors">
+                    {item.title}
+                  </h3>
+                  <div className="mt-3 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
+                    <span>{item.newsDate}</span>
+                    <span className="text-white bg-blue-600/20 px-2 py-0.5 rounded">
+                      View News
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
-export default NewsHome;
+export default NewsHeroSection;

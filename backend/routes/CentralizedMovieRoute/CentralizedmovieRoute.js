@@ -14,6 +14,7 @@ const {
   createMovie,
   updateMovie,
   deleteMovie,
+  getHomePageData,
 } = require("../../controllers/CentralizedMovieCreateController/CentralizedMovieCreate");
 
 // Controllers
@@ -24,6 +25,8 @@ const {
  * ==========================================
  */
 
+// New Movies Page - Upcoming matrum New Releases kku
+router.get("/home-pageData", getHomePageData);
 // New Movies Page - Upcoming matrum New Releases kku
 router.get("/newMovies-pageData", getNewMoviesPageData);
 
@@ -47,7 +50,7 @@ router.post(
   "/create-movie",
   AdminAuthProtect,
   uploadMix.fields([{ name: "bannerImage", maxCount: 1 }]),
-  createMovie
+  createMovie,
 );
 
 // Movie details-ai update panna
@@ -55,7 +58,7 @@ router.put(
   "/update-movie/:id",
   AdminAuthProtect,
   uploadMix.fields([{ name: "bannerImage", maxCount: 1 }]),
-  updateMovie
+  updateMovie,
 );
 
 // Movie-ai database-la irunthu neekka

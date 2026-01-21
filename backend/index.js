@@ -3,6 +3,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const sequelize = require("./config/db");
 require("dotenv").config();
+require("./models/associationIndex");
 const adminAuthRoutes = require("./routes/AdminAuthRoutes/AdminRoutes");
 const VideoSectionRoutes = require("./routes/HomePageRoutes/videoRoutes");
 const BlogSectionRoutes = require("./routes/HomePageRoutes/blogRoutes");
@@ -20,7 +21,7 @@ app.use(
     origin: ["http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser()); // Cookie parser-க்கு
 app.use(express.urlencoded({ extended: true, limit: "100mb" }));
@@ -31,6 +32,8 @@ app.use(express.urlencoded({ extended: true, limit: "100mb" }));
   try {
     await sequelize.authenticate();
     console.log("✅ MySQL connected successfully!");
+
+    // 2. Ippo sync pannum pothu Cast, Movie and MovieCast link aagidhum
     await sequelize.sync({
       alter: true,
     });
@@ -85,4 +88,4 @@ const server = app.listen(PORT, () => {
   console.log(`Server Connected ${PORT}`);
 });
 
-server.timeout = 600000;
+server.timeout = 700000;

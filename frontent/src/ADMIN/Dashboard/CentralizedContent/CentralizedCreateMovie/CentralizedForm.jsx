@@ -11,6 +11,7 @@ import {
   updateMovie,
 } from "../../../../redux/CentralizedMovieSlice/CentralizedMovieSlice";
 import { Autocomplete, Chip, TextField } from "@mui/material";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 
 const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
     title: "",
     showInNewMovies: false,
     showInStreamingNow: false,
+    showInHomepage: false, // ✨ NEW: Homepage section state added
     status: "RELEASED", // Upcoming, Released, Postponed
     streamType: "NEW_RELEASE", // NEW_RELEASE, TRENDING, UPCOMING
     director: "TBA",
@@ -58,6 +60,7 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
   const [formData, setFormData] = useState(initialFormState);
   const [bannerFile, setBannerFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  console.log(formData);
 
   const isEdit = !!contentData;
 
@@ -69,6 +72,16 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
   };
 
   const addGalleryField = () => {
+    // Kadaisi field empty-ah iruntha thirumba add panna allow panna koodathu
+    const lastLink = formData.galleryLinks[formData.galleryLinks.length - 1];
+
+    console.log(formData);
+
+    // Gallery empty-ah illama irunthalo, illana last link empty-ah irunthalo return pannu
+    if (formData.galleryLinks.length > 0 && lastLink.trim() === "") {
+      return; // Do nothing
+    }
+
     setFormData({
       ...formData,
       galleryLinks: [...formData.galleryLinks, ""],
@@ -250,16 +263,18 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
                 Streaming Section
               </label>
             </div>
-            {/* <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <input
                 type="checkbox"
-                checked={formData.isTrending}
+                checked={formData.showInHomepage}
                 onChange={(e) =>
-                  setFormData({ ...formData, isTrending: e.target.checked })
+                  setFormData({ ...formData, showInHomepage: e.target.checked })
                 }
               />
-              <label className="font-bold text-gray-700">Trending</label>
-            </div> */}
+              <label className="font-bold text-gray-700">
+                Homepage Section
+              </label>
+            </div>
           </div>
 
           {/* Section 2: Core Info */}
@@ -743,6 +758,66 @@ const CentralizedForm = ({ isOpen, onClose, contentData, setAlert }) => {
                 className="w-full border-b p-2 bg-transparent"
                 placeholder="https://..."
               />
+            </div>
+            <div className="md:col-span-3">
+              <label className="block text-[10px] font-bold text-gray-400 pb-3 uppercase">
+                Movie Gallery Links (Posters/Screenshots)
+              </label>
+              <button
+                type="button"
+                disabled={
+                  formData.galleryLinks.length > 0 &&
+                  formData.galleryLinks[
+                    formData.galleryLinks.length - 1
+                  ].trim() === ""
+                }
+                onClick={addGalleryField}
+                className={`flex items-center gap-1 cursor-pointer px-3 py-1 rounded-lg text-[11px] transition-all
+    ${
+      formData.galleryLinks.length > 0 &&
+      formData.galleryLinks[formData.galleryLinks.length - 1].trim() === ""
+        ? "bg-gray-300 cursor-not-allowed text-gray-500"
+        : "bg-indigo-600 text-white hover:bg-indigo-700 active:scale-95"
+    }`}
+              >
+                <FaPlus size={10} /> Add Link
+              </button>
+              <div className="space-y-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                {formData.galleryLinks.map((link, index) => (
+                  <div
+                    key={index}
+                    className="flex gap-3 mt-5 items-center group"
+                  >
+                    {/* ✨ Serial Number Badge */}
+                    <div className="flex-shrink-0 w-7 h-7 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center font-bold text-[11px] shadow-sm border border-indigo-200">
+                      {index + 1}
+                    </div>
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        placeholder="Enter Image URL (e.g., https://site.com/photo.jpg)"
+                        value={link}
+                        onChange={(e) =>
+                          handleGalleryChange(index, e.target.value)
+                        }
+                        className="w-full border rounded-xl p-2.5 outline-none focus:border-indigo-500 bg-white"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeGalleryField(index)}
+                      className="p-3 text-red-500 hover:bg-red-50 rounded-xl transition-colors"
+                    >
+                      <FaTrash size={14} />
+                    </button>
+                  </div>
+                ))}
+                {formData.galleryLinks.length === 0 && (
+                  <p className="text-gray-400 text-center py-2 italic text-[12px]">
+                    No gallery links added yet.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 

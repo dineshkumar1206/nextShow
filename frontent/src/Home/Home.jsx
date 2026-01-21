@@ -18,6 +18,7 @@ import { fetchActiveHomeStream } from "../redux/HomeContentSlice/HomeStreamSlice
 import { fetchActiveHomeMovies } from "../redux/HomeContentSlice/HomeMovieSlice";
 import { fetchActiveHomeTrailers } from "../redux/HomeContentSlice/HomeTrailerSlice";
 import LoadingComponents from "../Components/LoadingComponents";
+import { fetchHomePageData } from "../redux/CentralizedMovieSlice/CentralizedMovieSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -28,8 +29,11 @@ const Home = () => {
   const { activeItems } = useSelector((state) => state.homeStreaming);
   const { activeHomeMovies } = useSelector((state) => state.homeMovies);
   const { activeHomeTrailers } = useSelector((state) => state.homeTrailers);
+  const { homePageData, isPublicError } = useSelector(
+    (state) => state.centralizedMovies,
+  );
 
-  console.log(activeVideos, activeBlogs);
+  console.log(homePageData);
 
   const hasData = activeVideos.length > 0 && activeBlogs.length > 0;
 
@@ -50,6 +54,7 @@ const Home = () => {
           dispatch(fetchActiveHomeStream()).then(unwrapResult),
           dispatch(fetchActiveHomeMovies()).then(unwrapResult),
           dispatch(fetchActiveHomeTrailers()).then(unwrapResult),
+          dispatch(fetchHomePageData()).then(unwrapResult),
         ]);
       } catch (error) {
         console.error("Home Page Parallel Fetch Error:", error);
@@ -86,7 +91,7 @@ const Home = () => {
       />
       {/* <UpcomingMoviesCarousel />
       <NewReleaseMoviesCarousel /> */}
-      <MoviesSection activeHomeMovies={activeHomeMovies} />
+      <MoviesSection activeHomeMovies={homePageData.newReleases} />
       <MovieStreamingSection activeItems={activeItems} />
 
       <TrailerSection activeHomeTrailers={activeHomeTrailers} />
