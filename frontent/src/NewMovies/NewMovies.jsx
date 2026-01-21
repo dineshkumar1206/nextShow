@@ -18,7 +18,7 @@ const NewMovies = () => {
 
   // Redux state-la irunthu data-vai edukkirom
   const { newMoviesData, isPublicError } = useSelector(
-    (state) => state.centralizedMovies
+    (state) => state.centralizedMovies,
   );
 
   console.log(newMoviesData);
@@ -41,10 +41,8 @@ const NewMovies = () => {
         // Promise.all use panni parallel fetch pandrom
         // Unga slice-la ithu ore API call thaan,
         // aana innum extra calls (videos/ads) add panna ithu helpful-aa irukkum.
-        await Promise.all([
-          dispatch(fetchNewMoviesPage()).then(unwrapResult),
-          // Inga vera ethavathu fetch thalaivara iruntha add pannikalam
-        ]);
+        await dispatch(fetchNewMoviesPage()).then(unwrapResult);
+        // Inga vera ethavathu fetch thalaivara iruntha add pannikalam
       } catch (error) {
         console.error("New Movies Page Parallel Fetch Error:", error);
       } finally {

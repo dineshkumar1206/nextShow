@@ -54,7 +54,7 @@ const Home = () => {
           dispatch(fetchActiveHomeStream()).then(unwrapResult),
           dispatch(fetchActiveHomeMovies()).then(unwrapResult),
           dispatch(fetchActiveHomeTrailers()).then(unwrapResult),
-          dispatch(fetchHomePageData()).then(unwrapResult),
+          // dispatch(fetchHomePageData()).then(unwrapResult),
         ]);
       } catch (error) {
         console.error("Home Page Parallel Fetch Error:", error);
@@ -91,7 +91,7 @@ const Home = () => {
       />
       {/* <UpcomingMoviesCarousel />
       <NewReleaseMoviesCarousel /> */}
-      <MoviesSection activeHomeMovies={homePageData.newReleases} />
+      <MoviesSection activeItems={activeItems} />
       <MovieStreamingSection activeItems={activeItems} />
 
       <TrailerSection activeHomeTrailers={activeHomeTrailers} />

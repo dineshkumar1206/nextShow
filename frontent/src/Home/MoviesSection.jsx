@@ -202,16 +202,10 @@ export const MOVIE_REVIEWS_DATA = [
   },
 ];
 
-const MovieSection = ({ activeHomeMovies }) => {
-  const upcomingMovies = activeHomeMovies.filter(
-    (m) => m.streamType === "UPCOMING",
-  );
-  const newReleases = activeHomeMovies.filter(
-    (m) => m.streamType === "NEW_RELEASE",
-  );
-  const trendingNow = activeHomeMovies.filter(
-    (m) => m.streamType === "TRENDING",
-  );
+const MovieSection = ({ activeItems }) => {
+  const upcomingMovies = activeItems.filter((m) => m.streamType === "UPCOMING");
+  const newReleases = activeItems.filter((m) => m.streamType === "NEW");
+  const trendingNow = activeItems.filter((m) => m.streamType === "TRENDING");
 
   return (
     <div className="bg-[#0f0f0f] py-2 px-4 md:px-8 ">

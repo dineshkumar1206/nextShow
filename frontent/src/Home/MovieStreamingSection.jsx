@@ -204,7 +204,8 @@ export const MOVIE_REVIEWS_DATA = [
 
 const MovieStreamingSection = ({ activeItems }) => {
   const upcomingMovies = activeItems.filter((m) => m.streamType === "UPCOMING");
-  const newReleases = activeItems.filter((m) => m.streamType === "NEW_RELEASE");
+  // const newReleases = activeItems.filter((m) => m.streamType === "NEW_RELEASE");
+  const newReleases = activeItems.filter((m) => m.streamType === "NEW");
   const trendingNow = activeItems.filter((m) => m.streamType === "TRENDING");
 
   return (
