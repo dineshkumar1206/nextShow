@@ -197,21 +197,21 @@ const responseData = [
 
 const LatestNewsList = () => {
   return (
-    <section className="bg-white py-12 font-sans">
+    <section className="py-12 font-sans">
       <div className="max-w-[1400px] mx-auto px-4">
         {responseData.map((mainItem) => (
           <div
             key={mainItem.id}
-            className="grid grid-cols-12 gap-8 mb-20 border-b border-gray-100 pb-16 last:border-0"
+            className="grid grid-cols-12 gap-8 mb-20 border-b border-gray-50/10 pb-16 last:border-0"
           >
             {/* --- Column 1: Main Story (5/12) --- */}
             <div className="col-span-12 lg:col-span-5 group cursor-pointer">
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <span className="bg-[#EAB308] text-white px-4 py-1.5 font-black text-[10px] uppercase tracking-widest">
                   {mainItem.category}
                 </span>
-              </div>
-              <div className="relative overflow-hidden mb-6 shadow-sm">
+              </div> */}
+              <div className="relative overflow-hidden mb-6 rounded-lg shadow-sm">
                 <img
                   src={mainItem.bannerImage}
                   className="w-full h-[350px] object-cover transition-transform duration-700 group-hover:scale-105"
@@ -221,7 +221,7 @@ const LatestNewsList = () => {
                   {mainItem.tag}
                 </div> */}
               </div>
-              <h2 className="text-3xl font-bold text-[#D4A017] mb-3 leading-tight group-hover:text-black transition-colors">
+              <h2 className="text-3xl font-bold text-white mb-3 leading-tight group-hover:text-neutral-300 transition-colors">
                 {mainItem.title}
               </h2>
               {/* <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold uppercase mb-4">
@@ -231,32 +231,32 @@ const LatestNewsList = () => {
                   {mainItem.comments} <small className="text-[8px]">💬</small>
                 </span>
               </div> */}
-              <p className="text-gray-500 text-sm leading-relaxed line-clamp-3">
+              <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
                 {mainItem.shortDescription}
               </p>
             </div>
 
             {/* --- Column 2: Related Small Stories (3/12) --- */}
-            <div className="col-span-12 md:col-span-6 lg:col-span-3 space-y-6 lg:border-x border-gray-100 px-4">
-              <div className="flex justify-between items-center border-b pb-2 mb-4">
-                <span className="text-[10px] font-black uppercase text-gray-400 tracking-tighter">
+            <div className="col-span-12 md:col-span-6 lg:col-span-3 space-y-6 lg:border-x border-gray-50/10 px-4">
+              <div className="flex justify-between items-center  pb-2 mb-4">
+                <span className="text-[15px]  text-gray-400 tracking-[1px]">
                   Related Stories
                 </span>
-                <div className="flex gap-1">
+                {/* <div className="flex gap-1">
                   <button className="border p-1 text-[8px] hover:bg-black hover:text-white">
                     {"<"}
                   </button>
                   <button className="border p-1 text-[8px] hover:bg-black hover:text-white">
                     {">"}
                   </button>
-                </div>
+                </div> */}
               </div>
               {mainItem.related_stories.map((related) => (
                 <div
                   key={related.id}
                   className="flex gap-3 group cursor-pointer"
                 >
-                  <div className="w-20 h-16 flex-shrink-0 overflow-hidden bg-gray-50">
+                  <div className="w-20 h-16 flex-shrink-0 overflow-hidden">
                     <img
                       src={related.thumb}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
@@ -264,7 +264,7 @@ const LatestNewsList = () => {
                     />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold leading-tight group-hover:text-[#D4A017] line-clamp-2 transition-colors">
+                    <h4 className="text-xs font-bold leading-tight group-hover:text-neutral-300 line-clamp-2 transition-colors">
                       {related.title}
                     </h4>
                     <p className="text-[9px] text-gray-400 mt-1 uppercase font-bold tracking-wider">
@@ -277,12 +277,12 @@ const LatestNewsList = () => {
 
             {/* --- Column 3: Sidebar Section (4/12) --- */}
             <div className="col-span-12 md:col-span-6 lg:col-span-4 space-y-8">
-              <div className="group cursor-pointer bg-gray-50 p-4 rounded-sm border border-gray-100">
+              <div className="group cursor-pointer  p-4 rounded-sm ">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="bg-[#f05123] text-white px-3 py-1 text-[10px] font-black uppercase tracking-tighter">
+                  <span className="bg-orange-400 text-white px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-tighter">
                     Popular Content
                   </span>
-                  <div className="h-[1px] flex-1 bg-gray-200"></div>
+                  <div className="h-[1px] flex-1 bg-gray-50/10"></div>
                 </div>
                 <div className="relative mb-4 overflow-hidden">
                   <img
@@ -296,7 +296,7 @@ const LatestNewsList = () => {
                     </div>
                   </div>
                 </div>
-                <h3 className="text-lg font-bold leading-tight group-hover:text-[#f05123] mb-2 transition-colors">
+                <h3 className="text-lg font-bold leading-tight group-hover:text-neutral-300 mb-2 transition-colors">
                   {mainItem.sidebarContent.title}
                 </h3>
                 <div className="flex items-center gap-2 text-[9px] text-gray-400 font-bold uppercase tracking-widest">
@@ -304,10 +304,10 @@ const LatestNewsList = () => {
                     {mainItem.sidebarContent.author}
                   </span>{" "}
                   <span>-</span> <span>{mainItem.sidebarContent.date}</span>
-                  <div className="ml-auto flex items-center gap-1 text-[#f05123]">
+                  {/* <div className="ml-auto flex items-center gap-1 text-[#f05123]">
                     {mainItem.sidebarContent.comments}{" "}
                     <span className="text-[10px]">💬</span>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               {/* <div className="bg-gray-100/50 border border-gray-200 h-[100px] flex items-center justify-center text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">

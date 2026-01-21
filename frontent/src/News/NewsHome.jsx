@@ -69,15 +69,15 @@ const NewsHeroSection = () => {
   const sideBlogs = dummyBlogs.slice(1, 5);
 
   return (
-    <section className="bg-gray-50 py-10 font-sans">
+    <section className=" py-10 font-sans">
       <div className="max-w-7xl mx-auto px-4">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-8">
+        {/* <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-black uppercase tracking-tighter text-gray-900 border-l-4 border-blue-600 pl-3">
             Latest <span className="text-blue-600">Updates</span>
           </h2>
           <div className="h-[1px] flex-1 bg-gray-200 ml-4 hidden md:block"></div>
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-12 gap-6">
           {/* 🏆 LEFT BIG FEATURED CARD */}
@@ -92,11 +92,11 @@ const NewsHeroSection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20"></div>
 
             <div className="absolute bottom-0 left-0 w-full p-10 z-30">
-              <span className="inline-block bg-blue-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full uppercase mb-5 shadow-lg">
-                🔥 {featured.category}
-              </span>
+              {/* <span className="inline-block bg-blue-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full uppercase mb-5 shadow-lg">
+                {featured.category}
+              </span> */}
 
-              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight mb-4 group-hover:text-blue-300 transition-colors">
+              <h2 className="text-4xl md:text-5xl  text-white leading-tight mb-4 group-hover:text-neutral-300 transition-colors">
                 {featured.title}
               </h2>
 
@@ -121,7 +121,7 @@ const NewsHeroSection = () => {
             {sideBlogs.map((item) => (
               <div
                 key={item.id}
-                className="relative group overflow-hidden rounded-3xl cursor-pointer h-[265px] shadow-lg border border-gray-100 flex flex-col justify-end"
+                className="relative group overflow-hidden rounded-3xl cursor-pointer h-[265px] shadow-lg border-2 border-gray-100/30 flex flex-col justify-end"
               >
                 <img
                   src={item.bannerImage}
@@ -132,10 +132,10 @@ const NewsHeroSection = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent z-10"></div>
 
                 <div className="relative p-5 z-20">
-                  <span className="text-[10px] font-bold text-blue-400 uppercase mb-2 block">
+                  <span className="text-[12px] font-bold text-blue-400 uppercase mb-2 block">
                     {item.directedBy}
                   </span>
-                  <h3 className="text-white font-extrabold text-lg leading-tight line-clamp-2 group-hover:text-blue-200 transition-colors">
+                  <h3 className="text-white  text-lg leading-tight line-clamp-2 group-hover:text-blue-200 transition-colors">
                     {item.title}
                   </h3>
                   <div className="mt-3 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase tracking-tighter">
