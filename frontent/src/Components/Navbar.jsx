@@ -7,7 +7,7 @@ const navLinks = [
   { to: "/", label: "Home" },
   { to: "/new", label: "New Movies" },
   { to: "/stream", label: "Streaming Now" },
-  { to: "/trailer", label: "Trailers" },
+  // { to: "/trailer", label: "Trailers" },
   { to: "/news", label: "News" },
   { to: "/about", label: "About Us" },
   { to: "/auth/login", label: "Login" },
